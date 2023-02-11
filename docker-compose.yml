@@ -1,0 +1,9 @@
+services:
+  app:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - .:/app
+    env_file: config/.env
