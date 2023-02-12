@@ -1,14 +1,12 @@
 import asyncio
 import uuid
-from concurrent.futures import ProcessPoolExecutor
 from functools import partial
-from queue import Queue
 
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from loguru import logger
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from app.core.typings import DictStrStr
 from app.core.utils import Singleton
-from loguru import logger
 
 
 class DialogGPT(metaclass=Singleton):
@@ -65,8 +63,16 @@ class DialogGPT(metaclass=Singleton):
         new_generate = partial(self._model.generate, **kwargs)
         generated_token_ids = new_generate()
 
-        context_with_response = [self._tokenizer.decode(sample_token_ids) for sample_token_ids in generated_token_ids]
-        result = context_with_response[0].replace(self._memory, '').replace('@@ПЕРВЫЙ@@', '').replace('@@ВТОРОЙ@@', '')
+        context_with_response = [
+            self._tokenizer.decode(sample_token_ids)
+            for sample_token_ids in generated_token_ids
+        ]
+        result = (
+            context_with_response[0]
+            .replace(self._memory, '')
+            .replace('@@ПЕРВЫЙ@@', '')
+            .replace('@@ВТОРОЙ@@', '')
+        )
 
         self._memory = self._memory + result
         logger.info(f'Context: {self._memory}')

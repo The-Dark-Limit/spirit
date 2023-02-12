@@ -1,7 +1,6 @@
-import asyncio
 import os
 
-from aiogram import types, Dispatcher, Bot
+from aiogram import Bot, Dispatcher, types
 
 from app.model.sevices.dialogpt import DialogGPT
 
