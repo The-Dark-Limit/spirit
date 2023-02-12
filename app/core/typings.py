@@ -1,0 +1,2 @@
+
+DictStrStr = dict[str, str]
