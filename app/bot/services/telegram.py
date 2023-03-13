@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher, types
 
 from app.model.sevices.dialogpt import DialogGPT
 
-API_TOKEN = os.getenv('BOT_TOKEN', None)
+API_TOKEN = os.getenv("BOT_TOKEN", None)
 BOT = Bot(token=API_TOKEN)
 DP = Dispatcher(BOT)
 
@@ -17,6 +17,6 @@ async def handle_message(message: types.Message) -> None:
     await message.reply(result)
 
 
-@DP.message_handler(commands=['start', 'help'])
+@DP.message_handler(commands=["start", "help"])
 async def start(message: types.Message) -> None:
-    await message.reply('DialogGPT Bot')
+    await message.reply("DialogGPT Bot")
