@@ -1,6 +1,7 @@
 import asyncio
 import uuid
 from functools import partial
+from typing import NoReturn
 
 from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -12,16 +13,16 @@ from app.core.utils import Singleton
 class DialogGPT(metaclass=Singleton):
     def __init__(self):
         self._memory = ""
-        self._max_memory_size = 10000
+        self._max_memory_size = 1000
         self._request_mapper: DictStrStr = {}
         self._response_mapper: DictStrStr = {}
         # TODO Snapshots
         self._model = AutoModelForCausalLM.from_pretrained(
-            "tinkoff-ai/ruDialoGPT-medium"
+            "tinkoff-ai/ruDialoGPT-medium",
         )
         self._tokenizer = AutoTokenizer.from_pretrained("tinkoff-ai/ruDialoGPT-medium")
 
-    async def serve(self) -> None:
+    async def serve(self) -> NoReturn:
         while True:
             if len(self._request_mapper.keys()):
                 item = self._request_mapper.popitem()
@@ -81,4 +82,4 @@ class DialogGPT(metaclass=Singleton):
         logger.info(f"Context len: {len(self._memory)}")
         if len(self._memory) > self._max_memory_size:
             self._memory = ""
-        return result
+        return result.replace(question, "")

@@ -12,11 +12,8 @@ transformers = "^4.26.1"
 bitsandbytes = "^0.37.0"
 aiogram = "^2.25.1"
 loguru = "^0.6.0"
-isort = "^5.12.0"
 black = "^23.1.0"
-flake8 = "^6.0.0"
 ruff = "^0.0.254"
-diffusers = "^0.14.0"
 
 [tool.ruff]
 select = [
@@ -67,7 +64,18 @@ target-version = "py310"
 [tool.ruff.mccabe]
 max-complexity = 10
 
+[tool.isort]
+profile = "black"
+line_length = 90
+lines_after_imports = 2
+ensure_newline_before_comments = true
+known_third_party = ["image_service_client"]
 
+
+[tool.black]
+line-length = 90
+target-version = ["py310"]
+skip-string-normalization = true
 
 [build-system]
 requires = ["poetry-core"]

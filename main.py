@@ -3,14 +3,7 @@ import asyncio
 from aiogram.utils import executor
 
 from app.bot.services.telegram import DP
-from app.core.tasks import TaskKeeper
 from app.model.sevices.dialogpt import DialogGPT
-
-
-async def keep_always():
-    task_kepper_instance = TaskKeeper()
-    task_keeper = asyncio.create_task(task_kepper_instance.keep())
-    task_keeper.add_done_callback(keep_always)
 
 
 async def do_nothing():
