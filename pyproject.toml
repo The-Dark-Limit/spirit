@@ -59,7 +59,7 @@ unfixable = [
 extend-exclude = []
 
 line-length = 90
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.mccabe]
 max-complexity = 10
@@ -74,7 +74,7 @@ known_third_party = ["image_service_client"]
 
 [tool.black]
 line-length = 90
-target-version = ["py310"]
+target-version = ["py311"]
 skip-string-normalization = true
 
 [build-system]
