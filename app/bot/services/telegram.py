@@ -14,13 +14,14 @@ DP = Dispatcher(BOT)
 async def handle_message(message: types.Message) -> NoReturn:
     if '@big_balls_bot' in message.text:
         await get_answer(message)
-    elif (
-        message.reply_to_message is not None
-        and message.reply_to_message.from_user['username'] == 'big_balls_bot'
-    ):
+
+    if message.reply_to_message is not None and message.reply_to_message.from_user['username'] == 'big_balls_bot':
         await get_answer(message)
-    else:
-        print(message.text)
+
+    if message.chat.type == 'private':
+        await get_answer(message)
+
+    print(message.text)
 
 
 async def get_answer(message: types.Message) -> NoReturn:
