@@ -13,4 +13,4 @@ RUN poetry update
 
 ENV PYTHONPATH /app
 
-CMD ["python", "main.py"]
+CMD ["poetry", "run", "python", "main.py"]
