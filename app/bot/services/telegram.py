@@ -8,6 +8,7 @@ from loguru import logger
 from app.model.sevices.dialogpt import DialogGPT
 
 API_TOKEN = os.getenv("BOT_TOKEN", None)
+BOT_USERNAME = os.getenv('BOT_USERNAME', None)
 BOT = Bot(token=API_TOKEN)
 DP = Dispatcher(BOT)
 
@@ -21,12 +22,12 @@ async def start(message: types.Message) -> NoReturn:
 async def handle_message(message: types.Message) -> NoReturn:
     logger.info(f'Message: {message.text}')
 
-    if '@big_balls_bot' in message.text:
+    if f'@{BOT_USERNAME}' in message.text:
         await get_answer(message)
 
     if (
         message.reply_to_message is not None
-        and message.reply_to_message.from_user['username'] == 'big_balls_bot'
+        and message.reply_to_message.from_user['username'] == BOT_USERNAME
     ):
         await get_answer(message)
 
@@ -36,6 +37,6 @@ async def handle_message(message: types.Message) -> NoReturn:
 
 async def get_answer(message: types.Message) -> NoReturn:
     model: DialogGPT = DialogGPT()
-    uid = await model.put_request(message.text.replace('@big_balls_bot ', ''))
+    uid = await model.put_request(message.text.replace(f'@{BOT_USERNAME} ', ''))
     result = await model.get_response(uid)
     await message.reply(result)

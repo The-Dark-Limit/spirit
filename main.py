@@ -7,8 +7,10 @@ from app.bot.services.telegram import DP
 from app.model.sevices.dialogpt import DialogGPT
 
 
-async def do_nothing():
+async def do_nothing(*args, **kwargs):
     logger.info('Im just do nothing, so what?')
+    logger.info(args)
+    logger.info(kwargs)
 
 
 async def on_startup(dp):
