@@ -2,6 +2,7 @@ import os
 from typing import NoReturn
 
 from aiogram import Bot, Dispatcher, types
+from aiogram.types import ContentType
 from loguru import logger
 
 from app.model.sevices.dialogpt import DialogGPT
@@ -11,7 +12,12 @@ BOT = Bot(token=API_TOKEN)
 DP = Dispatcher(BOT)
 
 
-@DP.message_handler()
+@DP.message_handler(commands=["start", "help"])
+async def start(message: types.Message) -> NoReturn:
+    await message.reply("Твой отец тебя бросил...")
+
+
+@DP.message_handler(content_types=ContentType.TEXT)
 async def handle_message(message: types.Message) -> NoReturn:
     logger.info(f'Message: {message.text}')
 
@@ -33,8 +39,3 @@ async def get_answer(message: types.Message) -> NoReturn:
     uid = await model.put_request(message.text.replace('@big_balls_bot ', ''))
     result = await model.get_response(uid)
     await message.reply(result)
-
-
-@DP.message_handler(commands=["start", "help"])
-async def start(message: types.Message) -> NoReturn:
-    await message.reply("Твой отец тебя бросил...")
