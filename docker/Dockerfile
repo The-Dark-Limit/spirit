@@ -1,6 +1,6 @@
 FROM archlinux:latest
 
-RUN pacman -Syyu python python-poetry --noconfirm
+RUN pacman -Syyu python python-poetry tzdata python-pip python-setuptools --noconfirm
 
 ADD . /app
 WORKDIR /app
