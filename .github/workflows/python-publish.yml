@@ -1,4 +1,4 @@
-name: Upload Python Package
+name: Application Publish and Probe Service
 
 on:
   release:
@@ -25,7 +25,6 @@ jobs:
 
     - name: Probe
       run: python main.py | tee & exit
-
 
     - name: Build package
       run: python -m build
