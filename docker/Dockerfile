@@ -14,6 +14,7 @@ COPY poetry.lock poetry.lock
 COPY pyproject.toml pyproject.toml
 
 RUN poetry export -f requirements.txt --output requirements.txt
-RUN --mount=type=cache,target=/root/.cache & pip install -r requirements.txt --break-system-packages
+RUN --mount=type=cache,target=/root/.cache
+RUN pip install -r requirements.txt --break-system-packages
 
 CMD ["poetry", "run", "python", "main.py"]
