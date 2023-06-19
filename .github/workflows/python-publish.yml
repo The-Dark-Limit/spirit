@@ -1,6 +1,8 @@
 name: Application Publish and Probe Service
 
 on:
+  push:
+    branches: [ "main" ]
   release:
     types: [published]
 
