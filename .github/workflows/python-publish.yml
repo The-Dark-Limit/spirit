@@ -1,4 +1,4 @@
-name: Application Publish and Probe Service
+name: Probe Service
 
 on:
   push:
