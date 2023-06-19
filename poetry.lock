@@ -188,13 +188,13 @@ pytz = ">=2015.7"
 
 [[package]]
 name = "bitsandbytes"
-version = "0.37.2"
-description = "8-bit optimizers and matrix multiplication routines."
+version = "0.39.0"
+description = "k-bit optimizers and matrix multiplication routines."
 optional = false
 python-versions = "*"
 files = [
-    {file = "bitsandbytes-0.37.2-py3-none-any.whl", hash = "sha256:1335667ab91513eb518bbe0faaf3d423ff16a3fdf084bda5240c7acee234413f"},
-    {file = "bitsandbytes-0.37.2.tar.gz", hash = "sha256:3ccecb3361e1078110d9259e2d9362d62868aca7c1c4db6f4cc79e5489fbd39a"},
+    {file = "bitsandbytes-0.39.0-py3-none-any.whl", hash = "sha256:69e79cfce501cad5e34e9d785f5caf1768ead64f3e9f93b6bac1753e04dfa39a"},
+    {file = "bitsandbytes-0.39.0.tar.gz", hash = "sha256:b453dacf854e3624fe72b1306b1a6916de4a5edfd88fa01bf98ba73b2e3030d4"},
 ]
 
 [[package]]
@@ -1402,5 +1402,5 @@ multidict = ">=4.0"
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.11"
-content-hash = "a201d3cdbc5ef7e98b1077bf1b325597c610be0c6dde99e476d63993a491d422"
+python-versions = "~3.11"
+content-hash = "304607e7edae75994e992e0098336e0271dee9c5a4351f64796535fa2cdc385e"
