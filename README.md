@@ -1,4 +1,4 @@
-# WatchDog Backend
+# SPIRIT
 [![Dependency Review](https://github.com/The-Dark-Limit/spirit/actions/workflows/dependency-review.yml/badge.svg?branch=main)](https://github.com/The-Dark-Limit/spirit/actions/workflows/dependency-review.yml)
 
 [![Application CI](https://github.com/The-Dark-Limit/spirit/actions/workflows/backend.yml/badge.svg)](https://github.com/The-Dark-Limit/spirit/actions/workflows/backend.yml)
