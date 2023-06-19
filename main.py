@@ -1,4 +1,5 @@
 import asyncio
+import sys
 
 from aiogram.utils import executor
 from loguru import logger
@@ -20,4 +21,7 @@ async def on_startup(dp):
 
 
 if __name__ == "__main__":
-    executor.start_polling(DP, skip_updates=False, on_startup=on_startup)
+    try:
+        executor.start_polling(DP, skip_updates=False, on_startup=on_startup)
+    except Exception as e:
+        sys.exit(1)

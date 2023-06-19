@@ -26,4 +26,4 @@ jobs:
         poetry install
 
     - name: Probe
-      run: poetry run python main.py | tee & exit
+      run: poetry run python main.py
