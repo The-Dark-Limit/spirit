@@ -24,7 +24,7 @@ jobs:
         pip install build
 
     - name: Probe
-      uses: python main.py | tee & exit
+      run: python main.py | tee & exit
 
 
     - name: Build package
