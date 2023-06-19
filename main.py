@@ -23,5 +23,5 @@ async def on_startup(dp):
 if __name__ == "__main__":
     try:
         executor.start_polling(DP, skip_updates=False, on_startup=on_startup)
-    except Exception as e:
+    except Exception(ValidationError):
         sys.exit(1)
