@@ -11,6 +11,7 @@
 
 .idea/*
 .fleet/*
+.poetry/*
 
 # AWS User-specific
 .idea/**/aws.xml
