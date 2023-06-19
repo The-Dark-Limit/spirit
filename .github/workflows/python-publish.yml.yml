@@ -1,4 +1,4 @@
-name: 'Application Start Probe'
+name: 'Application Publish and Probe Service'
 
 on:
   push:
