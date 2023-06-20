@@ -188,13 +188,13 @@ pytz = ">=2015.7"
 
 [[package]]
 name = "bitsandbytes"
-version = "0.39.0"
+version = "0.39.1"
 description = "k-bit optimizers and matrix multiplication routines."
 optional = false
 python-versions = "*"
 files = [
-    {file = "bitsandbytes-0.39.0-py3-none-any.whl", hash = "sha256:69e79cfce501cad5e34e9d785f5caf1768ead64f3e9f93b6bac1753e04dfa39a"},
-    {file = "bitsandbytes-0.39.0.tar.gz", hash = "sha256:b453dacf854e3624fe72b1306b1a6916de4a5edfd88fa01bf98ba73b2e3030d4"},
+    {file = "bitsandbytes-0.39.1-py3-none-any.whl", hash = "sha256:56b920472eb9cf6daead3b49fd24c8bd64a3c22a841d59e541515586f76b9abb"},
+    {file = "bitsandbytes-0.39.1.tar.gz", hash = "sha256:c5cf516341c48bd439ee1c675abed8b2f04cc5b269022440d08dce59ba5e5a0c"},
 ]
 
 [[package]]
@@ -1403,4 +1403,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "90bb2a35f43e80a69c7bb5549a4a0ca6c4d74b494f24f02bc1045949e9142958"
+content-hash = "b3d79d36da706ac28e16d0a795d0159e40371926f85667e05403ea6ed7e123d9"
