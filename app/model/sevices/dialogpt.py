@@ -66,16 +66,8 @@ class DialogGPT(metaclass=Singleton):
         new_generate = partial(self._model.generate, **kwargs)
         generated_token_ids = new_generate()
 
-        context_with_response = [
-            self._tokenizer.decode(sample_token_ids)
-            for sample_token_ids in generated_token_ids
-        ]
-        result = (
-            context_with_response[0]
-            .replace(self._memory, '')
-            .replace('@@ПЕРВЫЙ@@', '')
-            .replace('@@ВТОРОЙ@@', '')
-        )
+        context_with_response = [self._tokenizer.decode(sample_token_ids) for sample_token_ids in generated_token_ids]
+        result = context_with_response[0].replace(self._memory, '').replace('@@ПЕРВЫЙ@@', '').replace('@@ВТОРОЙ@@', '')
 
         self._memory = self._memory + result
         logger.info(f'Context: {self._memory}')

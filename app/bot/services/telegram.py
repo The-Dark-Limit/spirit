@@ -26,10 +26,7 @@ async def handle_message(message: types.Message) -> NoReturn:
     if f'@{BOT_USERNAME}' in message.text:
         await get_answer(message)
 
-    if (
-        message.reply_to_message is not None
-        and message.reply_to_message.from_user['username'] == BOT_USERNAME
-    ):
+    if message.reply_to_message is not None and message.reply_to_message.from_user['username'] == BOT_USERNAME:
         await get_answer(message)
 
     if message.chat.type == 'private':
