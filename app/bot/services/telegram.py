@@ -7,15 +7,16 @@ from loguru import logger
 
 from app.model.sevices.dialogpt import DialogGPT
 
-API_TOKEN = os.getenv("BOT_TOKEN", None)
+
+API_TOKEN = os.getenv('BOT_TOKEN', None)
 BOT_USERNAME = os.getenv('BOT_USERNAME', None)
 BOT = Bot(token=API_TOKEN)
 DP = Dispatcher(BOT)
 
 
-@DP.message_handler(commands=["start", "help"])
+@DP.message_handler(commands=['start', 'help'])
 async def start(message: types.Message) -> NoReturn:
-    await message.reply("Твой отец тебя бросил...")
+    await message.reply('Твой отец тебя бросил...')
 
 
 @DP.message_handler(content_types=ContentType.TEXT)

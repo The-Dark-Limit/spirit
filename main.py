@@ -21,7 +21,7 @@ async def on_startup(dp):
     model_task.add_done_callback(do_nothing)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     try:
         executor.start_polling(DP, skip_updates=False, on_startup=on_startup)
     except ValidationError:
