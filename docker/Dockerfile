@@ -13,6 +13,6 @@ COPY app /app
 COPY pdm.lock pdm.lock
 COPY pyproject.toml pyproject.toml
 
-RUN pdm install
+RUN pdm install -d
 
 CMD ["python", "main.py"]
