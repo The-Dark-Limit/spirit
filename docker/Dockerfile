@@ -10,7 +10,7 @@ ADD . /app
 WORKDIR /app
 
 COPY app /app
-COPY poetry.lock poetry.lock
+COPY pdm.lock pdm.lock
 COPY pyproject.toml pyproject.toml
 
 RUN pdm install
