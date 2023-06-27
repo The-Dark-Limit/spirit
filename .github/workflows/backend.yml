@@ -27,11 +27,10 @@ jobs:
           poetry install
 
       - name: black
-        run: |
-          poetry run black --check .
+        run: python run black --check .
 
       - name: ruff
-        run: poetry run ruff check .
+        run: python run ruff check .
 
-#      - name: probe
-#        run: poetry run python main.py & exit
+      - name: probe
+        run: python run python main.py & exit
