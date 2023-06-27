@@ -26,10 +26,10 @@ jobs:
 
 
       - name: black
-        run: python run black --check .
+        run: python -m black --check .
 
       - name: ruff
-        run: python run ruff check .
+        run: python -m ruff check .
 
       - name: probe
-        run: python run python main.py & exit
+        run: python main.py & exit
