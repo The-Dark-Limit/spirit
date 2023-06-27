@@ -4,7 +4,7 @@ FROM archlinux:latest
 
 ENV PYTHONUNBUFFERED=1
 
-RUN pacman -Syyu python python-poetry python-pip python-setuptools --noconfirm
+RUN pacman -Syyu python python-pdm python-pip python-setuptools --noconfirm
 
 ADD . /app
 WORKDIR /app
@@ -13,6 +13,6 @@ COPY app /app
 COPY poetry.lock poetry.lock
 COPY pyproject.toml pyproject.toml
 
-RUN poetry install
+RUN pdm install
 
-CMD ["poetry", "run", "python", "main.py"]
+CMD ["python", "main.py"]
