@@ -2,24 +2,26 @@
 name = "spirit"
 version = "0.1.0"
 description = ""
-authors = [
-  { name = "NickiHell", email = "nickihell@ya.ru" },
-]
-dependencies = [
-  "torch<3.0.0,>=2.0.1",
-  "transformers<5.0.0,>=4.26.1",
-  "bitsandbytes<1.0.0,>=0.39.1",
-  "aiogram<3.0.0,>=2.25.1",
-  "loguru<1.0.0,>=0.7.0",
-]
-
-[project.group.dev.dependencies]
-black = "^23.3.0"
-ruff = "^0.0.275"
-
 requires-python = ">=3.11"
 readme = "README.md"
 license = { text = "MIT" }
+authors = [
+  { name = "NickiHell", email = "nickihell@ya.ru" },
+]
+
+dependencies = [
+    "torch>=2.0.1",
+    "transformers>=4.26.1",
+    "bitsandbytes>=0.39.1",
+    "aiogram>=3.0.0b7",
+    "loguru>=0.7.0",
+]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black>=23.3.0",
+    "ruff>=0.0.275",
+]
 
 [tool.ruff]
 line-length = 120
@@ -101,6 +103,7 @@ skip-string-normalization = true
 
 [tool.pdm.build]
 includes = []
+
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
