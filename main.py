@@ -1,8 +1,6 @@
 import asyncio
 import sys
 
-from aiogram.utils import executor
-from aiogram.utils.exceptions import ValidationError
 from loguru import logger
 
 from app.bot.services.telegram import DP
