@@ -6,20 +6,22 @@ requires-python = ">=3.11"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [
-  { name = "NickiHell", email = "nickihell@ya.ru" },
+    { name = "NickiHell", email = "nickihell@ya.ru" },
+]
+dependencies = [
+    "plotly>=5.17.0",
+    "torch>=2.0.1",
+    "transformers>=4.26.1",
+    "bitsandbytes>=0.39.1",
+    "aiogram>=3.0.0b7",
+    "loguru>=0.7.0",
+    "seaborn>=0.13.0",
 ]
 
 [tool.pdm.dev-dependencies]
-default = [
-  "torch>=2.0.1",
-  "transformers>=4.26.1",
-  "bitsandbytes>=0.39.1",
-  "aiogram>=3.0.0b7",
-  "loguru>=0.7.0",
-]
 dev = [
-  "black>=23.3.0",
-  "ruff>=0.0.275",
+    "ruff>=0.1.0",
+    "black>=23.10.0",
 ]
 
 [tool.ruff]
@@ -65,19 +67,6 @@ ignore = [
   "PLW1508", # Invalid type for environment variable default
   "FBT003", # Boolean positional value in function call
 ]
-"tests/*" = [
-  "ARG001", # Unused function argument
-  "ARG002", # Unused method argument
-  "ERA001", # Found commented-out code
-  "PLR0913", # Too many arguments to function call
-  "PLR2004", # Magic value used in comparison
-  "INP001", # File is part of an implicit namespace package
-]
-"*/migrations/*" = [
-  "INP001", # Add an `__init__.py`
-  "ERA001", # Found commented-out code
-  "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
-]
 
 unfixable = [
   "B", # Avoid trying to fix flake8-bugbear violations.
@@ -88,12 +77,6 @@ extend-exclude = []
 
 [tool.ruff.mccabe]
 max-complexity = 10
-
-[tool.isort]
-profile = "black"
-line_length = 120
-lines_after_imports = 2
-ensure_newline_before_comments = true
 
 [tool.black]
 line-length = 120
