@@ -3,7 +3,7 @@ import sys
 
 from loguru import logger
 
-from app.bot.services.telegram import DP
+from app.bot.services.telegram import DP, BOT
 from app.model.sevices.dialogpt import DialogGPT
 
 
@@ -18,9 +18,8 @@ async def on_startup(dp):
     model_task = asyncio.create_task(model.serve())
     model_task.add_done_callback(do_nothing)
 
+async def main():
+    await DP.start_polling(BOT)
 
 if __name__ == '__main__':
-    try:
-        executor.start_polling(DP, skip_updates=False, on_startup=on_startup)
-    except ValidationError:
-        sys.exit(1)
+    asyncio.run(main())

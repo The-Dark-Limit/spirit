@@ -2,7 +2,8 @@ import os
 from typing import NoReturn
 
 from aiogram import Bot, Dispatcher, types
-from aiogram.types import ContentType
+from aiogram.enums import ParseMode
+from aiogram.filters import CommandStart
 from loguru import logger
 
 from app.model.sevices.dialogpt import DialogGPT
@@ -10,16 +11,16 @@ from app.model.sevices.dialogpt import DialogGPT
 
 API_TOKEN = os.getenv('BOT_TOKEN', None)
 BOT_USERNAME = os.getenv('BOT_USERNAME', None)
-BOT = Bot(token=API_TOKEN)
-DP = Dispatcher(BOT)
+BOT = Bot(API_TOKEN, parse_mode=ParseMode.HTML)
+DP = Dispatcher()
 
 
-@DP.message_handler(commands=['start', 'help'])
+@DP.message(CommandStart())
 async def start(message: types.Message) -> NoReturn:
     await message.reply('Твой отец тебя бросил...')
 
 
-@DP.message_handler(content_types=ContentType.TEXT)
+@DP.message()
 async def handle_message(message: types.Message) -> NoReturn:
     logger.info(f'Message: {message.text}')
 
