@@ -2,7 +2,7 @@
 name = "spirit"
 version = "0.1.0"
 description = ""
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [
@@ -16,6 +16,7 @@ dependencies = [
     "aiogram>=3.0.0b7",
     "loguru>=0.7.0",
     "seaborn>=0.13.0",
+    "aioinject>=0.15.1",
 ]
 
 [tool.pdm.dev-dependencies]
