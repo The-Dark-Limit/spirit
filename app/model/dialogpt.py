@@ -22,13 +22,12 @@ class DialogGPT(metaclass=Singleton):
         )
         self._tokenizer = AutoTokenizer.from_pretrained('tinkoff-ai/ruDialoGPT-medium')
 
-    async def serve(self) -> NoReturn:
-        while True:
-            if len(self._request_mapper.keys()):
-                item = self._request_mapper.popitem()
-                result = await self._process(item[1])
-                self._response_mapper.update({item[0]: result})
-            await asyncio.sleep(1)
+    async def serve(self) -> None:
+        if len(self._request_mapper.keys()):
+            item = self._request_mapper.popitem()
+            result = await self._process(item[1])
+            self._response_mapper.update({item[0]: result})
+        await asyncio.sleep(1)
 
     async def put_request(self, request: str) -> str:
         uid = str(uuid.uuid4())
@@ -40,6 +39,7 @@ class DialogGPT(metaclass=Singleton):
     async def get_response(self, uid: str) -> str:
         response = None
         while response is None:
+            await self.serve()
             response = self._response_mapper.pop(uid, None)
             await asyncio.sleep(0.5)
         logger.info(f'[MODEL][RESPONSE_QUEUE]: {self._response_mapper}')

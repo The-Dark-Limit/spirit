@@ -9,11 +9,12 @@ authors = [
     { name = "NickiHell", email = "nickihell@ya.ru" },
 ]
 dependencies = [
-    "aioinject>=0.15.1",
     "torch>=2.1.1",
     "transformers>=4.35.2",
     "aiogram>=3.1.1",
     "loguru>=0.7.2",
+    "dependency-injector>=4.41.0",
+    "setuptools>=68.2.2",
 ]
 
 [tool.pdm.dev-dependencies]
