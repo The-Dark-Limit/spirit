@@ -4,10 +4,10 @@ from typing import NoReturn
 from aiogram import Bot, Dispatcher, types
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
+from aioinject import inject
 from loguru import logger
 
-from app.model.sevices.dialogpt import DialogGPT
-
+from app.core.di import container
 
 API_TOKEN = os.getenv('BOT_TOKEN', None)
 BOT_USERNAME = os.getenv('BOT_USERNAME', None)
@@ -34,8 +34,9 @@ async def handle_message(message: types.Message) -> NoReturn:
         await get_answer(message)
 
 
-async def get_answer(message: types.Message) -> NoReturn:
-    model: DialogGPT = DialogGPT()
+@inject
+async def get_answer(net_service, message: types.Message) -> NoReturn:
+    model = net_service()
     uid = await model.put_request(message.text.replace(f'@{BOT_USERNAME} ', ''))
     result = await model.get_response(uid)
     await message.reply(result)
