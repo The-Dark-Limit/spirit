@@ -12,10 +12,10 @@ else:
     RedisClient = Redis
 
 
-def get_redis_client(settings: RedisSettings) -> RedisClient:
+def get_redis_client() -> RedisClient:
     return RedisClient.from_url(
-        url=str(settings.HOST),
+        url='localhost',
         decode_responses=True,
-        retry=Retry(ExponentialBackoff(), 3),
+        retry=Retry(ExponentialBackoff(), 10),
         retry_on_timeout=True,
     )
