@@ -1,7 +1,7 @@
 import asyncio
 
-from app.bot.services.telegram import DP, BOT
-from app.model.containers import ModelsContainer
+from app.di.containers import ServicesContainer
+from app.modules.bot.telegram import DP, BOT
 
 
 async def main():
@@ -9,6 +9,6 @@ async def main():
 
 
 if __name__ == '__main__':
-    container = ModelsContainer()
-    container.wire(modules=[__name__, 'app.bot.services.telegram'])
+    container = ServicesContainer()
+    container.wire(modules=[__name__, 'app.modules.bot.telegram'])
     asyncio.run(main())

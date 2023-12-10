@@ -7,13 +7,14 @@ from aiogram.filters import CommandStart
 from dependency_injector.wiring import Provide, inject
 from loguru import logger
 
-from app.model.containers import ModelsContainer
-from app.model.dialogpt import DialogGPT
+from app.di.containers import ServicesContainer
+from app.modules.model.dialogpt import DialogGPT
 
 API_TOKEN = os.getenv('BOT_TOKEN', None)
 BOT_USERNAME = os.getenv('BOT_USERNAME', None)
 BOT = Bot(API_TOKEN, parse_mode=ParseMode.HTML)
 DP = Dispatcher()
+
 
 @DP.message(CommandStart())
 async def start(message: types.Message) -> NoReturn:
@@ -35,7 +36,9 @@ async def handle_message(message: types.Message) -> NoReturn:
 
 
 @inject
-async def get_answer(message: types.Message, model_service: DialogGPT = Provide[ModelsContainer.model_service]) -> None:
+async def get_answer(
+    message: types.Message, model_service: DialogGPT = Provide[ServicesContainer.model_service],
+) -> None:
     uid = await model_service.put_request(message.text.replace(f'@{BOT_USERNAME} ', ''))
     result = await model_service.get_response(uid)
     await message.reply(result)

@@ -1,16 +1,14 @@
 import asyncio
 import uuid
 from functools import partial
-from typing import NoReturn
 
 from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from app.core.typings import DictStrStr
-from app.core.utils import Singleton
+from app.infra.utils.typings import DictStrStr
 
 
-class DialogGPT(metaclass=Singleton):
+class DialogGPT:
     def __init__(self):
         self._memory = ''
         self._max_memory_size = 1000

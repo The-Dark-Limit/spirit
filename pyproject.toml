@@ -16,6 +16,10 @@ dependencies = [
     "dependency-injector>=4.41.0",
     "setuptools>=68.2.2",
     "msgspec>=0.18.4",
+    "rq>=1.15.1",
+    "backoff>=2.2.1",
+    "tortoise-orm>=0.20.0",
+    "aerich>=0.7.2",
 ]
 
 [tool.pdm.dev-dependencies]

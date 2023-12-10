@@ -6,7 +6,7 @@ services:
       dockerfile: docker/Dockerfile
     volumes:
       - .:/app
-    env_file: config/.env
+    env_file: app/config/.env
 
 #  postgres:
 #    image: "postgres:latest"
