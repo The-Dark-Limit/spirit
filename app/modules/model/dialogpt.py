@@ -73,3 +73,7 @@ class DialogGPT:
         if len(self._memory) > self._max_memory_size:
             self._memory = ''
         return result.replace(question, '')
+
+
+class Olama:
+    pass

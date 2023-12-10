@@ -9,7 +9,7 @@ class ServicesContainer(containers.DeclarativeContainer):
     model_service = providers.Singleton(
         DialogGPT,
     )
-    queue = providers.Factory(
-        Queue,
-        connection=get_redis_client()
-    )
+    # queue = providers.Factory(
+    #     Queue,
+    #     connection=get_redis_client()
+    # )

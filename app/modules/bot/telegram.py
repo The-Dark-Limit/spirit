@@ -25,10 +25,10 @@ async def start(message: types.Message) -> NoReturn:
 async def handle_message(message: types.Message) -> NoReturn:
     logger.info(f'Message: {message.text}')
 
-    if f'@{BOT_USERNAME}' in message.text:
+    if message.text is not None and f'@{BOT_USERNAME}' in message.text:
         await get_answer(message)
 
-    if message.reply_to_message is not None and message.reply_to_message.from_user['username'] == BOT_USERNAME:
+    if message.reply_to_message is not None and message.reply_to_message.from_user.is_bot == True:
         await get_answer(message)
 
     if message.chat.type == 'private':
