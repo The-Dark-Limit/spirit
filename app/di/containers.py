@@ -1,15 +1,6 @@
-from dependency_injector import containers, providers
-from rq import Queue
+from aioinject import Container, providers, Singleton
 
-from app.infra.redis import get_redis_client
-from app.modules.model.dialogpt import DialogGPT
+from app.modules.model.dialogpt import DialogGPTService
 
-
-class ServicesContainer(containers.DeclarativeContainer):
-    model_service = providers.Singleton(
-        DialogGPT,
-    )
-    # queue = providers.Factory(
-    #     Queue,
-    #     connection=get_redis_client()
-    # )
+container = Container()
+container.register(providers.Singleton(DialogGPTService))

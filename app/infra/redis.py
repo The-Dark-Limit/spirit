@@ -5,7 +5,6 @@ from redis.asyncio.retry import Retry
 from redis.backoff import ExponentialBackoff
 
 
-
 if TYPE_CHECKING:
     RedisClient: TypeAlias = Redis[str]
 else:

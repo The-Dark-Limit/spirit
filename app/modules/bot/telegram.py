@@ -1,14 +1,14 @@
 import os
-from typing import NoReturn
+from typing import NoReturn, Annotated
 
 from aiogram import Bot, Dispatcher, types
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
-from dependency_injector.wiring import Provide, inject
+from aioinject import inject, Inject
 from loguru import logger
 
-from app.di.containers import ServicesContainer
-from app.modules.model.dialogpt import DialogGPT
+from app.di import container
+from app.modules.model.dialogpt import DialogGPTService
 
 API_TOKEN = os.getenv('BOT_TOKEN', None)
 BOT_USERNAME = os.getenv('BOT_USERNAME', None)
@@ -24,21 +24,24 @@ async def start(message: types.Message) -> NoReturn:
 @DP.message()
 async def handle_message(message: types.Message) -> NoReturn:
     logger.info(f'Message: {message.text}')
+    async with container.context() as ctx:
+        service = await ctx.resolve(DialogGPTService)
 
-    if message.text is not None and f'@{BOT_USERNAME}' in message.text:
-        await get_answer(message)
+        if message.text is not None and f'@{BOT_USERNAME}' in message.text:
+            await get_answer(message)
 
-    if message.reply_to_message is not None and message.reply_to_message.from_user.is_bot == True:
-        await get_answer(message)
+        if message.reply_to_message is not None and message.reply_to_message.from_user.is_bot is True:
+            await get_answer(message)
 
-    if message.chat.type == 'private':
-        await get_answer(message)
+        if message.chat.type == 'private':
+            await get_answer(message)
 
 
 @inject
 async def get_answer(
-    message: types.Message, model_service: DialogGPT = Provide[ServicesContainer.model_service],
+    message: types.Message,
+    service: Annotated[DialogGPTService, Inject] = None,
 ) -> None:
-    uid = await model_service.put_request(message.text.replace(f'@{BOT_USERNAME} ', ''))
-    result = await model_service.get_response(uid)
+    uid = await service.put_request(message.text.replace(f'@{BOT_USERNAME} ', ''))
+    result = await service.get_response(uid)
     await message.reply(result)

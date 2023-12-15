@@ -1,8 +1,8 @@
 [project]
-name = ""
-version = ""
+name = "spirit"
+version = "0.1.0"
 description = ""
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [
@@ -13,13 +13,14 @@ dependencies = [
     "transformers>=4.35.2",
     "aiogram>=3.1.1",
     "loguru>=0.7.2",
-    "dependency-injector>=4.41.0",
     "setuptools>=68.2.2",
     "msgspec>=0.18.4",
     "rq>=1.15.1",
     "backoff>=2.2.1",
     "tortoise-orm>=0.20.0",
     "aerich>=0.7.2",
+    "httpx>=0.25.2",
+    "aioinject>=0.17.0",
 ]
 
 [tool.pdm.dev-dependencies]
@@ -95,3 +96,7 @@ skip-string-normalization = true
 [tool.pdm.build]
 includes = []
 
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"

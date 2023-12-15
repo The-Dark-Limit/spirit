@@ -8,7 +8,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from app.infra.utils.typings import DictStrStr
 
 
-class DialogGPT:
+class DialogGPTService:
     def __init__(self):
         self._memory = ''
         self._max_memory_size = 1000
