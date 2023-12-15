@@ -1,6 +1,6 @@
 import asyncio
 
-from app.modules.bot.telegram import DP, BOT
+from app.modules.bot.services.telegram import DP, BOT
 
 
 async def main():

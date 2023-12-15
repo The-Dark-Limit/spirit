@@ -8,7 +8,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from app.infra.utils.typings import DictStrStr
 
 
-class DialogGPTService:
+class DialogGPTNN:
     def __init__(self):
         self._memory = ''
         self._max_memory_size = 1000
@@ -16,9 +16,9 @@ class DialogGPTService:
         self._response_mapper: DictStrStr = {}
         # TODO Snapshots
         self._model = AutoModelForCausalLM.from_pretrained(
-            'tinkoff-ai/ruDialoGPT-medium',
+            'tinkoff-ai/ruDialoGPT-small',
         )
-        self._tokenizer = AutoTokenizer.from_pretrained('tinkoff-ai/ruDialoGPT-medium')
+        self._tokenizer = AutoTokenizer.from_pretrained('tinkoff-ai/ruDialoGPT-small')
 
     async def serve(self) -> None:
         if len(self._request_mapper.keys()):
@@ -73,7 +73,3 @@ class DialogGPTService:
         if len(self._memory) > self._max_memory_size:
             self._memory = ''
         return result.replace(question, '')
-
-
-class Olama:
-    pass
