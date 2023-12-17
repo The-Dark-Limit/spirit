@@ -7,7 +7,7 @@ from aiogram.filters import CommandStart
 from aioinject import inject, Inject
 from loguru import logger
 
-from app.di import container
+from app.di import nn_container
 from app.modules.neural_networks.services.dialogpt import DialogGPTNN
 
 API_TOKEN = os.getenv('BOT_TOKEN', None)
@@ -24,7 +24,7 @@ async def start(message: types.Message) -> NoReturn:
 @DP.message()
 async def handle_message(message: types.Message) -> NoReturn:
     logger.info(f'Message: {message.text}')
-    async with container.context() as ctx:
+    async with nn_container.context() as ctx:
         await ctx.resolve(DialogGPTNN)
 
         if message.text is not None and f'@{BOT_USERNAME}' in message.text:

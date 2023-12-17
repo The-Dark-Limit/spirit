@@ -1,3 +1,3 @@
-from app.di.containers import container
+from app.di.containers import nn_container, settings_container
 
-__all__ = ['container']
+__all__ = ['nn_container', 'settings_container']
