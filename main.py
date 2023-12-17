@@ -2,7 +2,7 @@ import asyncio
 
 from aiogram import types
 
-from app.modules.bot.services.telegram import BOT, DP, TelegramBotService
+from app.modules.bot.services.telegram import DP, BOT, TelegramBotService
 
 
 @DP.message()

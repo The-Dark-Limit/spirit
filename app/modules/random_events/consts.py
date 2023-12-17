@@ -1,6 +1,5 @@
 from app.modules.random_events.entity.random_events import RandomEvent, RandomEventType
 
-
 STICKER_LIST = [
     'CAACAgIAAxkBAAEK-yJlfqbwfqEbnBtdY1hcJmHs2Pu3cwACxRIAAo9wkEiKvM_KEU_KeDME',
     'CAACAgIAAxkBAAEK-yRlfqezvrHT-TFHYuW9FssJ8l47uAACiw4AAk7tyEhizTZbt7f0BzME',

@@ -6,9 +6,10 @@ from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from app.infra.utils.typings import DictStrStr
+from app.modules.neural_networks.services.base import ModelService
 
 
-class DialogGPTNN:
+class DialogGPTNNService(ModelService):
     def __init__(self):
         self._memory = ""
         self._max_memory_size = 1000
