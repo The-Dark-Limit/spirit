@@ -1,11 +1,8 @@
 import os
 from struct import Struct
 
-from msgspec.inspect import Field
-
 
 class RuntimeConf(Struct):
-
     def __setattr__(self, key, value):
         print()
 
