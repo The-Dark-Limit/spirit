@@ -11,15 +11,15 @@ from app.modules.neural_networks.services.base import ModelService
 
 class DialogGPTNNService(ModelService):
     def __init__(self):
-        self._memory = ''
+        self._memory = ""
         self._max_memory_size = 1000
         self._request_mapper: DictStrStr = {}
         self._response_mapper: DictStrStr = {}
         # TODO Snapshots
         self._model = AutoModelForCausalLM.from_pretrained(
-            'tinkoff-ai/ruDialoGPT-small',
+            "tinkoff-ai/ruDialoGPT-small",
         )
-        self._tokenizer = AutoTokenizer.from_pretrained('tinkoff-ai/ruDialoGPT-small')
+        self._tokenizer = AutoTokenizer.from_pretrained("tinkoff-ai/ruDialoGPT-small")
 
     async def serve(self) -> None:
         if len(self._request_mapper.keys()):
@@ -32,7 +32,7 @@ class DialogGPTNNService(ModelService):
         uid = str(uuid.uuid4())
         self._request_mapper.update({uid: request})
         if len(self._request_mapper.keys()):
-            logger.info(f'[MODEL][REQUEST_QUEUE]: {self._request_mapper}')
+            logger.info(f"[MODEL][REQUEST_QUEUE]: {self._request_mapper}")
         return uid
 
     async def get_response(self, uid: str) -> str:
@@ -41,12 +41,12 @@ class DialogGPTNNService(ModelService):
             await self.serve()
             response = self._response_mapper.pop(uid, None)
             await asyncio.sleep(0.5)
-        logger.info(f'[MODEL][RESPONSE_QUEUE]: {self._response_mapper}')
+        logger.info(f"[MODEL][RESPONSE_QUEUE]: {self._response_mapper}")
         return response
 
     async def _process(self, question: str) -> str:
-        memory = self._memory + f'@@ПЕРВЫЙ@@ {question} @@ВТОРОЙ@@'
-        inputs = self._tokenizer(memory, return_tensors='pt')
+        memory = self._memory + f"@@ПЕРВЫЙ@@ {question} @@ВТОРОЙ@@"
+        inputs = self._tokenizer(memory, return_tensors="pt")
 
         kwargs = dict(
             **inputs,
@@ -66,11 +66,11 @@ class DialogGPTNNService(ModelService):
         generated_token_ids = new_generate()
 
         context_with_response = [self._tokenizer.decode(sample_token_ids) for sample_token_ids in generated_token_ids]
-        result = context_with_response[0].replace(self._memory, '').replace('@@ПЕРВЫЙ@@', '').replace('@@ВТОРОЙ@@', '')
+        result = context_with_response[0].replace(self._memory, "").replace("@@ПЕРВЫЙ@@", "").replace("@@ВТОРОЙ@@", "")
 
         self._memory = self._memory + result
-        logger.info(f'Context: {self._memory}')
-        logger.info(f'Context len: {len(self._memory)}')
+        logger.info(f"Context: {self._memory}")
+        logger.info(f"Context len: {len(self._memory)}")
         if len(self._memory) > self._max_memory_size:
-            self._memory = ''
-        return result.replace(question, '')
+            self._memory = ""
+        return result.replace(question, "")
