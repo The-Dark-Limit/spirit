@@ -3,7 +3,7 @@ transformers==4.36.0
 aiogram==3.1.1
 loguru==0.7.2
 msgspec==0.18.4
-rq==1.15.1
+rq==1.16.1
 backoff==2.2.1
 tortoise-orm==0.20.0
 aerich==0.7.2
