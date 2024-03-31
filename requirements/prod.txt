@@ -8,4 +8,4 @@ backoff==2.2.1
 tortoise-orm==0.20.0
 aerich==0.7.2
 httpx==0.27.0
-aioinject==0.17.0
+aioinject==0.30.0
