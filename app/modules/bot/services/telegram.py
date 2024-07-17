@@ -4,11 +4,13 @@ from typing import NoReturn
 from aiogram import Bot, Dispatcher, types
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
+from aiogram.types import InputFile, FSInputFile
 from loguru import logger
 
 from app.modules.neural_networks.services.dialogpt import DialogGPTNNService
+from app.modules.neural_networks.services.diffusers import StableDiffusion
 from app.modules.neural_networks.typings import ModelServiceT
-from app.modules.random_events.entity.random_events import RandomEventType
+from app.modules.random_events.entity.random_events import RandomEventType, RandomEvent
 from app.modules.random_events.services.random_events import RandomEventsService
 from app.modules.random_events.typings import EventServiceT, EventT
 
@@ -32,9 +34,15 @@ class TelegramBotService:
         message: types.Message,
     ) -> NoReturn:
         logger.info(f'Message: {message.text}')
-        if event := self._event_service().roll_event(2):
+        # img = StableDiffusion().get_response(message.text)
+        # img.save('temp.jpg')
+        # photo = FSInputFile('temp.jpg')
+        # await message.answer_photo(photo)
+
+        if event := self._event_service().roll_event(probability=2):
             logger.info('Random event!')
             await self.execute_event(message, event)
+            # await self._event_service.execute_event(message, event)
 
         if message.text is not None and f'@{BOT_USERNAME}' in message.text:
             await self.get_answer(message)
@@ -61,6 +69,9 @@ class TelegramBotService:
             await message.answer_sticker(event.sticker)
         if event.type == RandomEventType.REPLY:
             await self.get_answer(message)
+        if event.type == RandomEventType.GENERATE_IMAGE:
+            img = StableDiffusion().get_response(message.text)
+            message.answer_photo()
 
     @DP.message(CommandStart())
     async def start(self, message: types.Message) -> NoReturn:
