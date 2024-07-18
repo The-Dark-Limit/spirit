@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "dev.txt" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
@@ -25,11 +25,5 @@ jobs:
         run: curl -sSL https://pdm.fming.dev.txt/dev.txt/install-pdm.py | python3 -
 
 
-      - name: black
-        run: python -m black --check .
-
-      - name: ruff
-        run: python -m ruff check .
-
-      - name: probe
-        run: python main.py & exit
+      - name: lint
+        run: sh scripts/lint.sh
