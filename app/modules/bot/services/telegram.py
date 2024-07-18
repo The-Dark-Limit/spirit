@@ -8,10 +8,8 @@ from aiogram.filters import CommandStart
 from loguru import logger
 
 from app.modules.neural_networks.services.dialogpt import DialogGPTNNService
-from app.modules.neural_networks.typings import ModelServiceT
 from app.modules.random_events.entity.random_events import RandomEventType
 from app.modules.random_events.services.random_events import RandomEventsService
-from app.modules.random_events.typings import EventServiceT, EventT
 
 
 API_TOKEN = os.getenv('BOT_TOKEN', None)
@@ -23,8 +21,8 @@ DP = Dispatcher()
 class TelegramBotService:
     def __init__(
         self,
-        event_service: EventServiceT = RandomEventsService,
-        model_service: ModelServiceT = DialogGPTNNService,
+        event_service=RandomEventsService,
+        model_service=DialogGPTNNService,
     ) -> None:
         self._event_service = event_service
         self._model_service = model_service
@@ -60,7 +58,7 @@ class TelegramBotService:
         result = await service.get_response(uid)
         await message.reply(result)
 
-    async def execute_event(self, message: types.Message, event: EventT) -> None:
+    async def execute_event(self, message: types.Message, event) -> None:
         if event.type == RandomEventType.MESSAGE:
             await message.reply(event.message)
         if event.type == RandomEventType.STICKER:

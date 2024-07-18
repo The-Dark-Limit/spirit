@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 
-from aiogram import types
+import pytz
 
 from app.modules.random_events.consts import RANDOM_EVENTS
 from app.modules.random_events.entity.random_events import RandomEvent
@@ -13,13 +13,15 @@ class RandomEventsService(EventService):
         self._events = RANDOM_EVENTS
 
     def roll_event(self, probability: float = 5.0) -> RandomEvent | None:
-        if not 0 <= probability <= 100:
-            raise ValueError('Probability must be between 0 and 100')
+        max_probability = 100
+        if not 0 <= probability <= max_probability:
+            msg = 'Probability must be between 0 and 100'
+            raise ValueError(msg)
 
-        random.seed(datetime.timestamp(datetime.now()))
+        random.seed(datetime.timestamp(datetime.now(tz=pytz.UTC)))
 
         if (random.randint(0, 100) - (100 - probability)) > 0:
             event: RandomEvent = random.choice(self._events)
             return event
 
-    async def execute_event(self, event: RandomEvent, message: types.Message) -> None: ...
+        return None
