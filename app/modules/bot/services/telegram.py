@@ -2,6 +2,7 @@ import os
 from typing import Annotated, NoReturn
 
 from aiogram import Bot, Dispatcher, types
+from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aioinject import Inject, inject
@@ -13,7 +14,7 @@ from app.modules.neural_networks.services.dialogpt import DialogGPTNN
 
 API_TOKEN = os.getenv('BOT_TOKEN', None)
 BOT_USERNAME = os.getenv('BOT_USERNAME', None)
-BOT = Bot(API_TOKEN, parse_mode=ParseMode.HTML)
+BOT = Bot(API_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 DP = Dispatcher()
 
 
