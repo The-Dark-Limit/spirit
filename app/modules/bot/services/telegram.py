@@ -29,16 +29,16 @@ async def handle_message(message: types.Message) -> NoReturn:
         service = await ctx.resolve(DialogGPTNN)
 
         if message.text is not None and f'@{BOT_USERNAME}' in message.text:
-            await get_answer(message, service)
+            await get_answer(message=message, service=service)
 
         if (
             message.reply_to_message is not None
             and message.reply_to_message.from_user.is_bot is True
         ):
-            await get_answer(message, service)
+            await get_answer(message=message, service=service)
 
         if message.chat.type == 'private':
-            await get_answer(message, service)
+            await get_answer(message=message, service=service)
 
 
 @inject

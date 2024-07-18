@@ -9,7 +9,7 @@ from app.infra.utils.typings import DictStrStr
 from app.modules.neural_networks.services.base import ModelService
 
 
-class DialogGPTNNService(ModelService):
+class DialogGPTNN(ModelService):
     def __init__(self):
         self._memory = ''
         self._max_memory_size = 1000
