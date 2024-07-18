@@ -22,6 +22,4 @@ class RandomEventsService(EventService):
             event: RandomEvent = random.choice(self._events)
             return event
 
-
-    async def execute_event(self, event: RandomEvent, message: types.Message) -> None:
-        ...
+    async def execute_event(self, event: RandomEvent, message: types.Message) -> None: ...

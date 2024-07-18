@@ -1,5 +1,5 @@
-from enum import Enum, auto
 from collections.abc import Callable
+from enum import Enum, auto
 
 import msgspec
 
@@ -12,8 +12,7 @@ class RandomEventType(Enum):
     REPLY = auto()
 
 
-class Event(msgspec.Struct):
-    ...
+class Event(msgspec.Struct): ...
 
 
 class RandomEvent(Event):

@@ -1,6 +1,6 @@
 accelerate==0.25.0
 aerich==0.7.2
-aiogram==3.1.1
+aiogram==3.10
 backoff==2.2.1
 diffusers==0.25.0
 httpx==0.25.2

@@ -26,7 +26,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists --mount=type=cache,target=/var/
        fi
 
 COPY requirements/dev.txt /app/requirements/dev.txt
-ARG installdev=false
+ARG installdev=true
 RUN --mount=type=cache,target=/root/.cache \
     if [ "${installdev}" = "true" ] ; \
       then pip install -r /app/requirements/dev.txt ; \

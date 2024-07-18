@@ -8,5 +8,5 @@ class RuntimeConf(Struct):
 
 
 class Settings(RuntimeConf):
-    BOT_TOKEN: str = os.getenv("BOT_TOKEN")
-    BOT_USERNAME: str = os.getenv("BOT_USERNAME")
+    BOT_TOKEN: str = os.getenv('BOT_TOKEN')
+    BOT_USERNAME: str = os.getenv('BOT_USERNAME')

@@ -3,7 +3,7 @@ services:
     restart: unless-stopped
     build:
       context: .
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
     volumes:
       - .:/app
     env_file: app/config/.env
