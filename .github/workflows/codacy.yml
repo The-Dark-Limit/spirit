@@ -2,9 +2,9 @@ name: Codacy Security Scan
 
 on:
   push:
-    branches: [ "main", "dev.txt" ]
+    branches: [ "main", "dev" ]
   pull_request:
-    branches: [ "main", "dev.txt" ]
+    branches: [ "main", "dev" ]
 
 permissions:
   contents: read
