@@ -1,5 +1,5 @@
 torch==2.2.2
-transformers==4.39.2
+transformers==4.42.4
 aiogram==3.10.0
 loguru==0.7.2
 msgspec==0.18.6
