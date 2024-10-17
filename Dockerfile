@@ -1,4 +1,4 @@
-FROM python:3.12.3-bullseye
+FROM python:3.12.7-slim-bullseye
 
 COPY requirements/prod.txt /app/requirements/prod.txt
 RUN --mount=type=cache,target=/var/lib/apt/lists --mount=type=cache,target=/var/cache/apt \
@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists --mount=type=cache,target=/var/
     && DEBIAN_FRONTEND=noninteractive apt-get \
          install -y --no-install-recommends $buildDeps $runDeps \
     # change timezone
-    && echo "Europe/Moscow" > /etc/timezone \
+    && echo "Asia/Vladivostok" > /etc/timezone \
     # install requirements
     && pip install -r /app/requirements/prod.txt \
     # cleaning
