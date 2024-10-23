@@ -1,4 +1,4 @@
-name: Python App
+name: "Python App"
 
 on:
   push:
@@ -25,9 +25,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements/dev.txt
     - name: Lint
+      shell: bash
       run: |
-        sh /scripts/fmt.sh
-        sh /scripts/lint.sh
+        ./scripts/fmt.sh
+        ./scripts/lint.sh
     - name: Test with pytest
       run: |
         pytest
