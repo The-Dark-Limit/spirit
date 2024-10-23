@@ -1,6 +1,6 @@
 from django.db import models
 
-from app.modules.apps.core.models import BaseModel
+from app.modules.django.apps.core.models import BaseModel
 
 
 class Show(BaseModel):

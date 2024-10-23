@@ -3,5 +3,6 @@
 set -o errexit
 set -o nounset
 
-ruff check --fix .
-black .
+. ./scripts/utils/prestart.sh
+
+sync
