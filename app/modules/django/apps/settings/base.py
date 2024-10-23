@@ -4,6 +4,7 @@ from pathlib import Path
 
 from app.modules.django.apps.settings.utils import getenv_bool
 
+
 # APPLICATION SETTINGS
 REDIS_HOST = os.environ.get('REDIS_HOST', 'redis://redis:6379/1')
 APPLICATION_NAME = 'spirit'
@@ -18,7 +19,7 @@ INTERNAL_SERVICE_REQUEST_TIMEOUT = int(
 )
 
 # SECURITY
-SECRET_KEY = '&%^mte%pubz%1u116uu6ctgl&h%f++3*+0(ri@)0c6#w(z_227'
+SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = getenv_bool('DEBUG_MODE', False)
 
 ALLOWED_HOSTS_DEFAULT_VALUE = ['*']

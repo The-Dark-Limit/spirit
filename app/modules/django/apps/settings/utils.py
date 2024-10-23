@@ -1,6 +1,7 @@
 import os
 from typing import TypeVar
 
+
 BYTES_IN_A_MEGABYTE = 1048576
 T = TypeVar('T')
 
