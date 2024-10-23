@@ -3,8 +3,6 @@ name: 'Application CI'
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "dev" ]
 
 jobs:
   build:
@@ -13,7 +11,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [ 3.11.3 ]
+        python-version: [ 3.12.7 ]
 
     steps:
       - uses: actions/checkout@v4
@@ -24,3 +22,9 @@ jobs:
 
       - name: lint
         run: sh scripts/lint.sh
+
+      - name: fmt
+        run: sh scripts/fmt.sh
+
+      - name: tests
+        run: pytest

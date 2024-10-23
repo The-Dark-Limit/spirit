@@ -1,4 +1,4 @@
-FROM python:3.12.7-slim-bullseye
+FROM python:latest
 
 COPY requirements/prod.txt /app/requirements/prod.txt
 RUN --mount=type=cache,target=/var/lib/apt/lists --mount=type=cache,target=/var/cache/apt \
