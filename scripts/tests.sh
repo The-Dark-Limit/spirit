@@ -3,5 +3,4 @@
 set -o errexit
 set -o nounset
 
-ruff check --fix .
-ruff format .
+exec python -m pytest tests -vv

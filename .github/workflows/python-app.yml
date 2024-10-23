@@ -29,6 +29,8 @@ jobs:
       run: |
         ./scripts/fmt.sh
         ./scripts/lint.sh
-    - name: Test with pytest
-      run: |
-        pytest
+
+    - name: Pytests
+      shell: bash
+      run: ./scripts/tests.sh
+

@@ -3,7 +3,8 @@
 err=0
 trap 'err=1' ERR
 
+#mypy .
 ruff check .
-black --check .
+ruff format --diff .
 
 exit $err
