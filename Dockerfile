@@ -10,6 +10,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists --mount=type=cache,target=/var/
         " \
     && runDeps=" \
         # utils \
+        gettext \
         curl \
         " \
     && DEBIAN_FRONTEND=noninteractive apt-get \
@@ -33,6 +34,6 @@ RUN --mount=type=cache,target=/root/.cache \
     fi
 
 WORKDIR /app
-CMD ["python", "main.py"]
-
 COPY . /app
+#RUN python ./manage.py compilemessages
+#RUN python ./manage.py collectstatic --noinput

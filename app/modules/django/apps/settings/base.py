@@ -149,8 +149,6 @@ STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = []
 
 # CACHE
-REDIS_HOST = os.environ.get('REDIS_HOST', 'redis://redis:6379/2')
-
 _redis_socket_timeout = os.getenv('REDIS_SOCKET_TIMEOUT', None)
 if _redis_socket_timeout is not None:
     _redis_socket_timeout = int(_redis_socket_timeout)
