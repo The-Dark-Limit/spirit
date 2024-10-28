@@ -3,7 +3,7 @@ services:
     container_name: spirit
     restart: unless-stopped
     command:
-      - python main.py
+      - scripts/dev-server-bot.sh
     build:
       context: .
       dockerfile: Dockerfile
@@ -18,7 +18,7 @@ services:
     <<: *spirit
     restart: unless-stopped
     command:
-      - python3 manage.py runserver 0.0.0.0:8000
+#      - python manage.py runserver 0.0.0.0:8000
     build:
       context: .
       dockerfile: Dockerfile

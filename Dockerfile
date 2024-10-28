@@ -33,7 +33,5 @@ RUN --mount=type=cache,target=/root/.cache \
       then pip install -r /app/requirements/dev.txt ; \
     fi
 
-WORKDIR /app
 COPY . /app
-#RUN python ./manage.py compilemessages
-#RUN python ./manage.py collectstatic --noinput
+WORKDIR /app
