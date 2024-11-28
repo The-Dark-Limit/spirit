@@ -107,9 +107,6 @@ pretty = true
 show_column_numbers = true
 show_error_codes = true
 
-# TODO: Remove when https://github.com/python/mypy/issues/4717 fixed
-disable_error_code = ["type-abstract"]
-
 [tool.pydantic-mypy]
 init_forbid_extra = false
 init_typed = false
