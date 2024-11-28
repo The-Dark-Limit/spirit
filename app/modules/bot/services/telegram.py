@@ -9,7 +9,8 @@ from aioinject import Inject, inject
 from loguru import logger
 
 from app.di import nn_container
-from app.modules.neural_networks.services.llama import Llama
+from app.modules.neural_networks.services.dialogpt import DialogGPTNN
+
 
 API_TOKEN = os.getenv('BOT_TOKEN', None)
 BOT_USERNAME = os.getenv('BOT_USERNAME', None)
@@ -21,12 +22,13 @@ DP = Dispatcher()
 async def start(message: types.Message) -> NoReturn:
     await message.reply('Твой отец тебя бросил...')
 
+
 @DP.message()
 @logger.catch(reraise=True)
 async def handle_message(message: types.Message) -> NoReturn:
     logger.info(f'Message: {message.text}')
     async with nn_container.context() as ctx:
-        service = await ctx.resolve(Llama)
+        service = await ctx.resolve(DialogGPTNN)
 
         if message.text is not None and f'@{BOT_USERNAME}' in message.text:
             await get_answer(message=message, service=service)
@@ -44,8 +46,8 @@ async def handle_message(message: types.Message) -> NoReturn:
 @inject
 async def get_answer(
     message: types.Message,
-    service: Annotated[Llama, Inject] = None,
+    service: Annotated[DialogGPTNN, Inject] = None,
 ) -> None:
-    # uid = await service.put_request(message.text.replace(f'@{BOT_USERNAME} ', ''))
-    result = await service.get_response(message)
+    uid = await service.put_request(message.text.replace(f'@{BOT_USERNAME} ', ''))
+    result = await service.get_response(uid)
     await message.reply(result)

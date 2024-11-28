@@ -3,12 +3,12 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
 class Llama:
-    model_name = "Vikhrmodels/Vikhr-Llama-3.2-1B-instruct"
+    model_name = 'Vikhrmodels/Vikhr-Llama-3.2-1B-instruct'
     model = AutoModelForCausalLM.from_pretrained(model_name)
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     async def get_response(self, question: types.Message):
-        input_ids = self.tokenizer.encode(question.text, return_tensors="pt")
+        input_ids = self.tokenizer.encode(question.text, return_tensors='pt')
         output = self.model.generate(
             input_ids,
             max_length=1512,
