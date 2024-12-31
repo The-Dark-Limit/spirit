@@ -1,5 +1,5 @@
 accelerate==1.2.1
-torch==2.2.2
+torch==2.5.1
 transformers==4.43.1
 aiogram==3.10.0
 loguru==0.7.2
