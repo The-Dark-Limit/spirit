@@ -1,7 +1,7 @@
 from celery import Celery
 from kombu import Exchange, Queue
 
-from app.modules.django.apps.settings.utils import getenv_bool
+from config.django_settings.utils import getenv_bool
 
 
 celery_app = Celery('spirit')
@@ -15,6 +15,6 @@ CELERY_QUEUES = (Queue('main', Exchange('main'), routing_key='main'),)
 CELERY_ALWAYS_EAGER = getenv_bool('CELERY_ALWAYS_EAGER', True)
 CELERY_IGNORE_RESULT = getenv_bool('CELERY_IGNORE_RESULT', True)
 CELERY_TRACK_STARTED = getenv_bool('CELERY_TRACK_STARTED', True)
-celery_app.config_from_object('django.conf:settings', namespace='CELERY')
+celery_app.config_from_object('django.conf:django_settings', namespace='CELERY')
 celery_app.autodiscover_tasks()
 CELERYBEAT_SCHEDULE = {}

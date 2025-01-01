@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 
-from app.modules.django.apps.settings.utils import getenv_bool
+from config.django_settings.utils import getenv_bool
 
 
 # APPLICATION SETTINGS
@@ -13,10 +13,6 @@ STAGE_NAME = os.environ.get('STAGE_NAME', 'production')
 
 # BASE DIR
 BASE_DIR = Path(__file__).parent.parent.parent.resolve()
-
-INTERNAL_SERVICE_REQUEST_TIMEOUT = int(
-    os.environ.get('INTERNAL_SERVICE_REQUEST_TIMEOUT', 40),
-)
 
 # SECURITY
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -37,18 +33,12 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # APPLICATION DEFINITIONS
 INSTALLED_APPS = [
-    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Local apps
-    'app.modules.django.apps.core',
-    'app.modules.django.apps.shows',
-    # External packages
-    # 'cid',
 ]
 
 MIDDLEWARE = [

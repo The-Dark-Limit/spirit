@@ -15,8 +15,8 @@ Dockerfile
 compose.yaml
 compose.override.yaml
 
-# Project settings
-# app/conf/local*.py
+# Project django_settings
+# old/conf/local*.py
 
 # Distribution / packaging
 .Python

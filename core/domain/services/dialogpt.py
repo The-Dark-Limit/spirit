@@ -3,10 +3,9 @@ import uuid
 from functools import partial
 
 from loguru import logger
+from old.infra.utils.typings import DictStrStr
+from old.modules.neural_networks.services.base import ModelService
 from transformers import AutoModelForCausalLM, AutoTokenizer
-
-from app.infra.utils.typings import DictStrStr
-from app.modules.neural_networks.services.base import ModelService
 
 
 class DialogGPTNN(ModelService):

@@ -3,10 +3,9 @@ import secrets
 from datetime import datetime
 
 import pytz
-
-from app.modules.random_events.consts import RANDOM_EVENTS
-from app.modules.random_events.entity.random_events import RandomEvent
-from app.modules.random_events.services.base import EventService
+from old.modules.random_events.consts import RANDOM_EVENTS
+from old.modules.random_events.entity.random_events import RandomEvent
+from old.modules.random_events.services.base import EventService
 
 
 class RandomEventsService(EventService):

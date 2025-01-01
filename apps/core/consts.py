@@ -1,4 +1,4 @@
-from app.modules.random_events.entity.random_events import RandomEvent, RandomEventType
+from old.modules.random_events.entity.random_events import RandomEvent, RandomEventType
 
 
 STICKER_LIST = [
