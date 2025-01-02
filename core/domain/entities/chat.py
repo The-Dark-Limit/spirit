@@ -3,7 +3,7 @@ from typing import Literal
 import msgspec
 
 
-class Chat(msgspec.Struct):
+class Chat(msgspec.Struct): # Pydantic
     id: int
     type: Literal['private', 'supergroup']
     title: str | None

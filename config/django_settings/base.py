@@ -9,7 +9,7 @@ from config.django_settings.utils import getenv_bool
 REDIS_HOST = os.environ.get('REDIS_HOST', 'redis://redis:6379/1')
 APPLICATION_NAME = 'spirit'
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
-STAGE_NAME = os.environ.get('STAGE_NAME', 'production')
+STAGE_NAME = os.environ.get('STAGE_NAME', 'dev')
 
 # BASE DIR
 BASE_DIR = Path(__file__).parent.parent.parent.resolve()

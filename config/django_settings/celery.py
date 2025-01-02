@@ -6,7 +6,6 @@ from config.django_settings.utils import getenv_bool
 
 celery_app = Celery('spirit')
 
-# Celery Configuration Options
 CELERY_TIMEZONE = 'Asia/Vladivostok'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
