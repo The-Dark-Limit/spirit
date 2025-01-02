@@ -2,7 +2,4 @@ ruff==0.5.2
 pytest==8.3.3
 mypy==1.13.0
 ipython==8.31.0
-pytest-mock==3.12.0
-pytest-randomly==3.16.0
-jupyter==1.1.1
-ipywidgets==8.1.5
+decoy==2.1.1

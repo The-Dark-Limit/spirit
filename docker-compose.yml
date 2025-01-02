@@ -8,8 +8,8 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - .:/app
-    env_file: app/config/.env
+      - .:/old
+    env_file: config/env/.env
 #    networks:
 #      - spirit_network
 
@@ -23,22 +23,16 @@ services:
 #      context: .
 #      dockerfile: Dockerfile
 #    volumes:
-#      - .:/app
-#    env_file: app/config/.env
+#      - .:/old
+#    env_file: old/config/.env
 #    networks:
 #      - spirit_network
-#
-#  celery_main:
-#    container_name: celery_main
-#    <<: *spirit
-#    ports: [ ]
-#    command: ./scripts/dev-celery.sh
 #
 #  postgres:
 #    container_name: postgres
 #    image: "postgres:latest"
 #    restart: unless-stopped
-#    env_file: app/config/.env
+#    env_file: old/config/.env
 #    ports:
 #      - "5432:5432"
 #    volumes:
@@ -50,7 +44,7 @@ services:
 #    container_name: redis
 #    image: "redis:latest"
 #    restart: unless-stopped
-#    env_file: app/config/.env
+#    env_file: old/config/.env
 #    ports:
 #      - "6389:6379"
 #    networks:

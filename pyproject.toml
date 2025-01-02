@@ -51,7 +51,8 @@ lint.ignore = [
   "RUF003", # ruff unicode specific rules
   "TRY003", # Duplicates EM101 warning
   "B904", # Duplicates B904 warning
-  'COM812'
+  'COM812',
+  'ERA001',
 ]
 
 lint.unfixable = [
