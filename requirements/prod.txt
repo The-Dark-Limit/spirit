@@ -1,6 +1,6 @@
 accelerate==1.2.1
 torch==2.5.1
-transformers==4.48.0
+transformers==4.48.1
 aiogram==3.17.0
 loguru==0.7.3
 celery==5.4.0
