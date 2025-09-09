@@ -31,9 +31,24 @@ try:
 except TypeError:
     ALLOWED_HOSTS = ALLOWED_HOSTS_DEFAULT_VALUE
 
-USE_X_FORWARDED_HOST = getenv_bool('USE_X_FORWARDED_HOST', True)
-USE_X_FORWARDED_PORT = getenv_bool('USE_X_FORWARDED_PORT', True)
+# Устаревшие настройки прокси в Django 5 удалены: USE_X_FORWARDED_HOST/PORT.
+# Используем SECURE_PROXY_SSL_HEADER.
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Дополнительные безопасные настройки (управляются окружением)
+SECURE_SSL_REDIRECT = getenv_bool('SECURE_SSL_REDIRECT', not DEBUG)
+SESSION_COOKIE_SECURE = getenv_bool('SESSION_COOKIE_SECURE', not DEBUG)
+CSRF_COOKIE_SECURE = getenv_bool('CSRF_COOKIE_SECURE', not DEBUG)
+SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', '0' if DEBUG else '31536000'))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = getenv_bool('SECURE_HSTS_INCLUDE_SUBDOMAINS', not DEBUG)
+SECURE_HSTS_PRELOAD = getenv_bool('SECURE_HSTS_PRELOAD', not DEBUG)
+
+# Разрешенные источники для CSRF (JSON-список, например: '["https://example.com"]')
+try:
+    _csrf_origins = json.loads(os.environ.get('CSRF_TRUSTED_ORIGINS', '[]'))
+    CSRF_TRUSTED_ORIGINS = _csrf_origins
+except TypeError:
+    CSRF_TRUSTED_ORIGINS = []
 
 # APPLICATION DEFINITIONS
 INSTALLED_APPS = [
@@ -52,11 +67,13 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.security.SecurityMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
+
+    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -104,7 +121,7 @@ if _db_conn_max_age is not None:
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME', 'spirit'),
         'USER': os.getenv('DB_USER', 'spirit'),
         'PASSWORD': os.getenv('DB_PASSWORD', 'spirit'),
@@ -114,7 +131,7 @@ DATABASES = {
         'OPTIONS': {},
     },
 }
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # USER PASSWORD VALIDATORS
@@ -135,7 +152,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # INTERNATIONALIZATION
-LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'ru-RU')
+LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'ru')
 LOCALE_PATHS = (BASE_DIR / 'locale',)
 TIME_ZONE = os.environ.get('TIME_ZONE', 'UTC')
 USE_I18N = True

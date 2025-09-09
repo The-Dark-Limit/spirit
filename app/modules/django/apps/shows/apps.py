@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class ShowConfig(AppConfig):
-    name = 'app.shows'
+    name = 'app.modules.django.apps.shows'
