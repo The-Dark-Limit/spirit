@@ -6,7 +6,7 @@ requires-python = ">=3.13"
 dependencies = [
   "accelerate==1.5.2",
   "aiogram==3.22.0",
-  "aioinject==0.38.0",
+  "aioinject==1.9.0",
   "apscheduler==4.0.0a5",
   "backoff==2.2.1",
   "celery==5.4.0",
