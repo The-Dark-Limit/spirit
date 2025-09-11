@@ -75,3 +75,4 @@ ENV/
 
 # sts-reloader
 .stsruntime/
+/logs/
