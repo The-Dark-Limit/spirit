@@ -1,8 +1,9 @@
 from typing import Optional
 
-from core.domain.ports import BotStatusRepository, StrategyRepository
 from core.domain.services import MessageProcessor
 from core.domain.value_objects import BotResponse, MessageText, UserId
+from spirit.core.domain.ports import BotStatusRepository, StrategyRepository
+from telegram_bot.exceptions import ProcessMessageError
 from telegram_bot.infrastructure.adapters.telegram import TelegramBotAdapter
 from telegram_bot.infrastructure.repositories.django import (
     DjangoBotStatusRepository,
@@ -60,7 +61,7 @@ class BotController:
                 UserId(user_id),
                 MessageText(text),
             )
-        except Exception as e:
+        except ProcessMessageError as e:
             return BotResponse(
                 f"Processing error: {e!s}",
                 requires_echo=True,
@@ -99,5 +100,6 @@ class BotController:
 
 # Константы для ошибок
 BOT_CONTROLLER_NOT_SINGLETON_ERROR = (
-    "BotController is a singleton. Use BotController.get_instance() to get the instance."
+    "BotController is a singleton. "
+    "Use BotController.get_instance() to get the instance."
 )

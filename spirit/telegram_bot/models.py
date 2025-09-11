@@ -5,6 +5,7 @@ from django.db import models
 
 class BotStatusModel(models.Model):
     """Singleton model for bot status management"""
+
     is_running = models.BooleanField(default=False, verbose_name="Bot is running")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Last update")
 
@@ -15,7 +16,7 @@ class BotStatusModel(models.Model):
     def __str__(self) -> str:
         return f"Bot Status: {'Running' if self.is_running else 'Stopped'}"
 
-    def save(self, *args: Any, **kwargs: Any) -> None:
+    def save(self, *args: tuple[Any], **kwargs: dict[str, Any]) -> None:
         self.pk = 1
         super().save(*args, **kwargs)
         self.__class__.objects.filter(pk__gt=1).delete()
@@ -28,6 +29,7 @@ class BotStatusModel(models.Model):
 
 class ResponseStrategy(models.Model):
     """Model for configuring message response strategies"""
+
     STRATEGY_TYPES: ClassVar[Tuple[Tuple[str, str], ...]] = (
         ("keyword", "Keyword-based"),
         ("regex", "Regex-based"),

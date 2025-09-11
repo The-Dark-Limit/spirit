@@ -3,9 +3,9 @@ from typing import ClassVar
 
 from django.core.cache import cache
 
-from core.domain.ports import BotStatusRepository, StrategyRepository
 from core.domain.strategies import KeywordStrategy, RegexStrategy
 from core.domain.strategies.default import DefaultEchoStrategy
+from spirit.core.domain.ports import BotStatusRepository, StrategyRepository
 from telegram_bot.models import BotStatusModel, ResponseStrategy
 
 
@@ -17,7 +17,7 @@ class DjangoStrategyRepository(StrategyRepository):
         "regex": RegexStrategy,
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._cache_key = "telegram_bot:strategies:active"
         self._lock = asyncio.Lock()
 

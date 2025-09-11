@@ -19,6 +19,7 @@ STRATEGY_PREVIEW_LENGTH = 50
 @admin.register(BotStatusModel)
 class BotStatusAdmin(admin.ModelAdmin):
     """Улучшенная админка для управления состоянием бота"""
+
     list_display: ClassVar[List[str]] = [
         "status_badge",
         "updated_at",
@@ -56,7 +57,7 @@ class BotStatusAdmin(admin.ModelAdmin):
             buttons.append(
                 format_html(
                     '<button class="button button-primary" onclick="startBot()">'
-                    'Start</button>',
+                    "Start</button>",
                 ),
             )
 
@@ -92,6 +93,7 @@ class BotStatusAdmin(admin.ModelAdmin):
         request: HttpRequest,
         obj: BotStatusModel,
         form: ModelForm,
+        *,
         change: bool,
     ) -> None:
         obj.updated_at = timezone.now()
@@ -111,6 +113,7 @@ class BotStatusAdmin(admin.ModelAdmin):
 
 class StrategyAdminBase:
     """Базовая настройка админки для стратегий"""
+
     list_display: ClassVar[List[str]] = [
         "name",
         "strategy_type_badge",
@@ -128,24 +131,36 @@ class StrategyAdminBase:
     readonly_fields: ClassVar[Tuple[str, ...]] = ("created_at", "updated_at")
 
     fieldsets: ClassVar[Tuple[Tuple[Optional[str], dict], ...]] = (
-        (None, {
-            "fields": ("name", "strategy_type", "is_active", "priority"),
-        }),
-        ("Parameters", {
-            "fields": (),
-            "classes": ("strategy-params",),
-        }),
-        ("Response template", {
-            "fields": ("response_template",),
-            "description": mark_safe(
-                "Use <code>{text}</code> for original message, "
-                "<code>{group_name}</code> for regex captured groups",
-            ),
-        }),
-        ("Metadata", {
-            "fields": ("created_at", "updated_at"),
-            "classes": ("collapse",),
-        }),
+        (
+            None,
+            {
+                "fields": ("name", "strategy_type", "is_active", "priority"),
+            },
+        ),
+        (
+            "Parameters",
+            {
+                "fields": (),
+                "classes": ("strategy-params",),
+            },
+        ),
+        (
+            "Response template",
+            {
+                "fields": ("response_template",),
+                "description": mark_safe(
+                    "Use <code>{text}</code> for original message, "
+                    "<code>{group_name}</code> for regex captured groups",
+                ),
+            },
+        ),
+        (
+            "Metadata",
+            {
+                "fields": ("created_at", "updated_at"),
+                "classes": ("collapse",),
+            },
+        ),
     )
 
     def strategy_type_badge(
@@ -210,6 +225,7 @@ class StrategyAdminBase:
 @admin.register(ResponseStrategy)
 class ResponseStrategyAdmin(StrategyAdminBase, admin.ModelAdmin):
     """Улучшенная админка для настройки стратегий обработки"""
+
     actions: ClassVar[List[str]] = ["duplicate_strategy"]
 
     def duplicate_strategy(

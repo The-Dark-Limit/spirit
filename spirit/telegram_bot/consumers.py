@@ -13,10 +13,14 @@ class BotStatusConsumer(AsyncWebsocketConsumer):
 
         # Send current status on connect
         status = BotStatusModel.load()
-        await self.send(text_data=json.dumps({
-            "is_running": status.is_running,
-            "updated_at": str(status.updated_at),
-        }))
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "is_running": status.is_running,
+                    "updated_at": str(status.updated_at),
+                },
+            ),
+        )
 
     async def disconnect(self, close_code: int) -> None:
         await self.channel_layer.group_discard("bot_status", self.channel_name)

@@ -1,17 +1,17 @@
+# Добавьте в начало файла
 import os
-import sys
 from pathlib import Path
 
 # Основные пути
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(BASE_DIR))  # Добавляем корень проекта в PYTHONPATH
 
 # Загрузка настроек Telegram
 try:
-    from .telegram import (
+    from spirit.settings.telegram import (
         TELEGRAM_BOT_TOKEN,
         TELEGRAM_BOT_USERNAME,
-        TELEGRAM_STRATEGY_CACHE_TIMEOUT,
+        TELEGRAM_STRATEGY_CACHE_TIMEOUT
     )
 except ImportError:
     # Дефолтные значения для разработки
@@ -22,15 +22,16 @@ except ImportError:
 # Добавьте приложение в INSTALLED_APPS
 INSTALLED_APPS = [
     # Стандартные приложения Django
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
     # Ваши приложения
-    "core",  # If you have a separate core
-    "telegram_bot",  # Our Telegram bot application
+    'spirit.core',  # Если у вас есть отдельное ядро
+    'spirit.telegram_bot',  # Наше приложение для Telegram бота
 ]
 
 # Настройки кэширования (обязательно для стратегий)
@@ -40,22 +41,22 @@ CACHES = {
         "LOCATION": os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    },
+        }
+    }
 }
 
 # Middleware для обработки асинхронных запросов
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Добавьте этот middleware для асинхронной работы
-    "django_asgi.middleware.AsyncMiddleware",
+    'django_asgi.middleware.AsyncMiddleware',
 ]
 
 # Добавьте в конец файла
-ASGI_APPLICATION = "your_project.asgi.application"
+ASGI_APPLICATION = 'spirit.settings.asgi.application'

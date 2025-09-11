@@ -9,6 +9,7 @@ class KeywordStrategy(ProcessingStrategy):
         self,
         keyword: str,
         response: str,
+        *,
         case_sensitive: bool = False,
     ) -> None:
         self.keyword = keyword

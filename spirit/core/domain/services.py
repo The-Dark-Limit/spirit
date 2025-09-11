@@ -1,7 +1,6 @@
-
-from core.domain.ports import StrategyRepository
 from core.domain.strategies.default import DefaultEchoStrategy
 from core.domain.value_objects import BotResponse, MessageText, UserId
+from spirit.core.domain.ports import StrategyRepository
 
 
 class MessageProcessor:

@@ -1,0 +1,2 @@
+class ProcessMessageError(Exception):
+    pass

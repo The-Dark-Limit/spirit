@@ -1,9 +1,8 @@
-from typing import Any
-
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
+from aiogram.types import Message
 
-from core.domain.ports import BotOutputPort
+from spirit.core.domain.ports import BotOutputPort
 from telegram_bot.application.bot_controller import BotController
 
 
@@ -19,7 +18,7 @@ class TelegramBotAdapter(BotOutputPort):
         """Настраивает обработчики сообщений"""
 
         @self.dispatcher.message(Command(commands=["start"]))
-        async def start_handler(message: Any) -> None:
+        async def start_handler(message: Message) -> None:
             if not self.controller.is_running():
                 await message.answer("Бот временно отключен")
                 return
@@ -27,7 +26,7 @@ class TelegramBotAdapter(BotOutputPort):
             await message.answer("Привет! Я телеграм-бот.")
 
         @self.dispatcher.message()
-        async def message_handler(message: Any) -> None:
+        async def message_handler(message: Message) -> None:
             if not self.controller.is_running():
                 return
 

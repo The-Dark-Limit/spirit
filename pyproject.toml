@@ -28,66 +28,62 @@ dev = [
 
 [tool.setuptools]
 include-package-data = true
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["*"]
-namespaces = false
+packages = {find = {where = ["spirit"], include = ["*"]}}
 
 [tool.ruff.lint]
-select = ["ALL"]
-ignore = [
-    "ANN101",  # Missing type annotation for self in method
-    "ANN102",  # Missing type annotation for cls in classmethod
-    "D",       # pydocstyle errors
-    "EM",      # Error message formatting
-    "ICN",     # Import conventions
-    "NPY",     # NumPy
-    "PD",      # pandas
-    "PGH",     # pandas-grouper
-    "PL",      # Pylint
-    "PTH",     # Pathlib
-    "RET",     # Return
-    "RSE",     # Raise
-    "SIM",     # Simplicity
-    "TCH",     # Type checking
-    "TD",      # Type definition
-    "TRY",     # Try/except
-    "UP",      # Unpythonic
-    "YTT",     # Yoda-style tests
+select = [
+    "A",
+    "B",
+    "C",
+    "DTZ",
+    "E",
+    "EXE",
+    "F",
+    "G",
+    "I",
+    "ICN",
+    "ISC",
+    "N",
+    "PGH",
+    "PIE",
+    "PL",
+    "PT",
+    "PYI",
+    "RUF",
+    "S",
+    "T20",
+    "TID",
+    "UP",
+    "W",
+    "YTT",
+]
+extend-ignore = [
+    "PLR",  # Too many rule violations for refactoring
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
-"settings/*.py" = ["ANN", "S101", "TCH"]
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
+"settings/*.py" = ["S101"]
+"*/migrations/*" = ["N806", "N815"]
+"*/tests/*" = ["S101", "S106"]
+"*/test_*.py" = ["S101", "S106"]
 
 [tool.mypy]
 python_version = "3.13"
 plugins = ["mypy_django_plugin.main"]
+mypy_path = ["spirit"]
 
-# Настройка django-stubs
 [[tool.mypy.overrides]]
 module = [
     "django.*",
-    "django",
+    "aiogram.*",
+    "channels.*",
+    "asgiref.*",
 ]
 ignore_missing_imports = true
 
-# Настройка для конкретных модулей
-[tool.mypy."core.*"]
+[tool.mypy."spirit.*"]
 follow_imports = "silent"
-ignore_missing_imports = true
-
-[tool.mypy."telegram_bot.*"]
-follow_imports = "silent"
-ignore_missing_imports = true
-
-[tool.mypy."settings.*"]
-follow_imports = "silent"
-ignore_missing_imports = true
 
 [tool.mypy."*.migrations.*"]
 ignore_errors = true

@@ -13,6 +13,7 @@ MESSAGE_LENGTH_ERROR = (
 @dataclass(frozen=True)
 class UserId:
     """Value Object для идентификатора пользователя"""
+
     value: int
 
     def __post_init__(self) -> None:
@@ -23,6 +24,7 @@ class UserId:
 @dataclass(frozen=True)
 class MessageText:
     """Value Object для текста сообщения"""
+
     value: str
 
     def __post_init__(self) -> None:
@@ -35,6 +37,7 @@ class MessageText:
 @dataclass(frozen=True)
 class BotResponse:
     """Value Object для ответа бота"""
+
     text: str
     requires_echo: bool = True
     meta: Optional[dict[str, Any]] = None
