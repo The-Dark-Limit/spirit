@@ -1,63 +1,93 @@
 services:
-  spirit: &spirit
-    container_name: spirit
-    restart: unless-stopped
-    command:
-      - scripts/dev-server-bot.sh
-    build:
-      context: .
-      dockerfile: Dockerfile
+  web:
+    build: .
+    command: sh -c "python manage.py collectstatic --noinput && python manage.py migrate && uvicorn spirit.settings.asgi:application --host 0.0.0.0 --port 8000"
     volumes:
       - .:/app
-    env_file: app/config/.env
-#    networks:
-#      - spirit_network
+      - static-volume:/app/staticfiles
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=spirit.settings.django
+      - SECRET_KEY=${SECRET_KEY}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-spirit}
+      - POSTGRES_USER=${POSTGRES_USER:-spirit}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-spirit}
+      - DEBUG=${DEBUG:-False}
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+    networks:
+      - spirit-network
 
-#  spirit-backend:
-#    container_name: spirit-backend
-#    <<: *spirit
-#    restart: unless-stopped
-#    command:
-##      - python manage.py runserver 0.0.0.0:8000
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    volumes:
-#      - .:/app
-#    env_file: app/config/.env
-#    networks:
-#      - spirit_network
-#
-#  celery_main:
-#    container_name: celery_main
-#    <<: *spirit
-#    ports: [ ]
-#    command: ./scripts/dev-celery.sh
-#
-#  postgres:
-#    container_name: postgres
-#    image: "postgres:latest"
-#    restart: unless-stopped
-#    env_file: app/config/.env
-#    ports:
-#      - "5432:5432"
-#    volumes:
-#      - postgres-data:/var/lib/postgresql/data
-#    networks:
-#      - spirit_network
-#
-#  redis:
-#    container_name: redis
-#    image: "redis:latest"
-#    restart: unless-stopped
-#    env_file: app/config/.env
-#    ports:
-#      - "6389:6379"
-#    networks:
-#      - spirit_network
-#
-#volumes:
-#  postgres-data:
-#
-#networks:
-#  spirit_network:
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - spirit-network
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-spirit}
+      POSTGRES_USER: ${POSTGRES_USER:-spirit}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-spirit}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-spirit} -d ${POSTGRES_DB:-spirit}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - spirit-network
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - spirit-network
+
+volumes:
+  static-volume:
+  redis-data:
+  postgres-data:
+
+networks:
+  spirit-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

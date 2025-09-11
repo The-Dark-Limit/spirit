@@ -1,0 +1,211 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+    <script src="{% static 'admin/js/bot_status.js' %}"></script>
+    <style>
+        .status-card {
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .status-badge {
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        .strategy-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .strategy-type {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>Мониторинг Telegram бота</h1>
+
+                <div class="status-card {% if status.is_running %}bg-success{% else %}bg-danger{% endif %} text-white">
+                    <h2>Текущий статус:
+                        <span class="status-badge">
+                            {{ status.get_status_display }}
+                        </span>
+                    </h2>
+                    <p>Последнее обновление: {{ status.updated_at }}</p>
+                    <div>
+                        <button id="startBtn" class="btn btn-primary" {% if status.is_running %}disabled{% endif %}>
+                            Запустить бота
+                        </button>
+                        <button id="stopBtn" class="btn btn-secondary" {% if not status.is_running %}disabled{% endif %}>
+                            Остановить бота
+                        </button>
+                        <button id="restartBtn" class="btn btn-warning">
+                            Перезагрузить бота
+                        </button>
+                    </div>
+                </div>
+
+                <h2>Активные стратегии ({{ active_strategies_count }})</h2>
+                <div class="card">
+                    <div class="card-body">
+                        {% for strategy in strategies %}
+                        <div class="strategy-item">
+                            <span class="strategy-type bg-{{ strategy.strategy_type|default:'secondary' }}">
+                                {{ strategy.get_strategy_type_display }}
+                            </span>
+                            <strong>{{ strategy.name }}</strong>
+                            (приоритет: {{ strategy.priority }})
+                            <p class="mb-0">{{ strategy.response_template|truncatechars:100 }}</p>
+                        </div>
+                        {% empty %}
+                        <p>Нет активных стратегий</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Статистика</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Обработано сообщений
+                                <span class="badge bg-primary rounded-pill">1,245</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Активных пользователей
+                                <span class="badge bg-primary rounded-pill">87</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Последняя ошибка
+                                <span class="badge bg-danger rounded-pill">Нет</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3>Тестирование стратегий</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="test-strategy-form">
+                            <div class="mb-3">
+                                <label for="test-message" class="form-label">Введите тестовое сообщение</label>
+                                <input type="text" class="form-control" id="test-message"
+                                       placeholder="Привет, бот!">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Проверить</button>
+                        </form>
+                        <div id="test-result" class="mt-3" style="display: none;">
+                            <h5>Результат:</h5>
+                            <div class="alert alert-info" id="result-text"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const restartBtn = document.getElementById('restartBtn');
+
+            startBtn.addEventListener('click', () => {
+                fetch('{% url "telegram_bot:api-start-bot" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          location.reload();
+                      }
+                  });
+            });
+
+            stopBtn.addEventListener('click', () => {
+                fetch('{% url "telegram_bot:api-stop-bot" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          location.reload();
+                      }
+                  });
+            });
+
+            restartBtn.addEventListener('click', () => {
+                if (confirm('Вы уверены, что хотите перезагрузить бота?')) {
+                    fetch('{% url "telegram_bot:api-restart-bot" %}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken')
+                        }
+                    }).then(response => response.json())
+                      .then(data => {
+                          if (data.success) {
+                              location.reload();
+                          }
+                      });
+                }
+            });
+
+            // Тестирование стратегий
+            document.getElementById('test-strategy-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const message = document.getElementById('test-message').value;
+
+                fetch('/api/test-strategy/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({message: message})
+                }).then(response => response.json())
+                  .then(data => {
+                      document.getElementById('result-text').textContent = data.response;
+                      document.getElementById('test-result').style.display = 'block';
+                  });
+            });
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+    </script>
+{% endblock %}

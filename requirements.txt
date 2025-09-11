@@ -1,0 +1,13 @@
+Django>=4.2
+aiogram>=3.4
+django-redis>=5.2
+mypy-extensions>=1.0
+django-stubs>=4.2
+django-stubs-ext>=4.2
+pandas>=2.3.2
+uvicorn>=0.35.0
+python-multipart>=0.0.9
+types-redis
+types-requests>=2.31.0.20240116
+psycopg2-binary>=2.9.9
+whitenoise>=6.6.0

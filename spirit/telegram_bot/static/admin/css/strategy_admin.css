@@ -1,0 +1,16 @@
+.preview-box {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: #f8f9fa;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.strategy-params {
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 10px;
+    background: #f8f9fa;
+}
