@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from spirit.core.domain.strategies.base import ProcessingStrategy
 from spirit.core.domain.value_objects import BotResponse, MessageText, UserId
 

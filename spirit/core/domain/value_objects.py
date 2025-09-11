@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any
+
 
 # Константы для валидации
 TELEGRAM_MESSAGE_MAX_LENGTH = 4096

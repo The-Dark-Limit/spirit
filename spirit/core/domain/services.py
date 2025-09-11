@@ -1,3 +1,4 @@
+from __future__ import annotations
 
 from spirit.core.domain.ports import StrategyRepository
 from spirit.core.domain.value_objects import BotResponse, MessageText, UserId

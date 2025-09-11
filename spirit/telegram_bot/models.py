@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any, ClassVar
 
 from django.db import models
@@ -10,7 +12,7 @@ class BotStatusModel(models.Model):
     last_error = models.TextField(blank=True, null=True, verbose_name="Last error")
 
     class Meta:
-        app_label = 'telegram_bot'
+        app_label = "telegram_bot"
         verbose_name = "Bot status"
         verbose_name_plural = "Bot status"
 
@@ -23,7 +25,7 @@ class BotStatusModel(models.Model):
         self.__class__.objects.filter(pk__gt=1).delete()
 
     @classmethod
-    def load(cls) -> "BotStatusModel":
+    def load(cls) -> BotStatusModel:
         obj, _created = cls.objects.get_or_create(pk=1)
         return obj
 
@@ -84,7 +86,7 @@ class ResponseStrategy(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
 
     class Meta:
-        app_label = 'telegram_bot'
+        app_label = "telegram_bot"
         verbose_name = "Response strategy"
         verbose_name_plural = "Response strategies"
         ordering: ClassVar[list] = ["-priority"]
@@ -100,12 +102,12 @@ class ResponseStrategy(models.Model):
                 "response": self.response_template,
                 "case_sensitive": self.case_sensitive
             }
-        elif self.strategy_type == "regex":
+        if self.strategy_type == "regex":
             return {
                 "pattern": self.regex_pattern,
                 "response": self.response_template
             }
-        elif self.strategy_type == "vikhr":
+        if self.strategy_type == "vikhr":
             return {
                 "max_length": self.max_length,
                 "temperature": self.temperature

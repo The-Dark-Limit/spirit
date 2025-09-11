@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from django.core.cache import cache
 from django.db import connections
 from django.db.utils import OperationalError
@@ -9,7 +11,7 @@ from django.views.decorators.http import require_http_methods
 def health_check(request):
     """Health check endpoint for Docker"""
     # Проверка базы данных
-    db_conn = connections['default']
+    db_conn = connections["default"]
     try:
         db_conn.cursor()
         db_status = "ok"

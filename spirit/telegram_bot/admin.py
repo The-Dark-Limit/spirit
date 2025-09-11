@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import ClassVar
 
 from django.contrib import admin
@@ -9,6 +11,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from spirit.telegram_bot.models import BotStatusModel, ResponseStrategy
+
 
 # Константы
 STRATEGY_PREVIEW_LENGTH = 50

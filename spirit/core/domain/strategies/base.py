@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 
 from spirit.core.domain.value_objects import BotResponse, MessageText, UserId

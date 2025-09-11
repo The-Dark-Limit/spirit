@@ -1,8 +1,12 @@
+from __future__ import annotations
+
 import logging
 
 import torch
+
 from core.domain.strategies.base import ProcessingStrategy
 from core.domain.value_objects import BotResponse, MessageText, UserId
+
 
 logger = logging.getLogger(__name__)
 

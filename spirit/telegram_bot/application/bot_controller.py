@@ -1,14 +1,18 @@
+from __future__ import annotations
+
 import logging
-from typing import Optional
 
 from spirit.core.domain.ports import BotStatusRepository, StrategyRepository
 from spirit.core.domain.value_objects import BotResponse, MessageText, UserId
-from spirit.telegram_bot.infrastructure.adapters.telegram import TelegramBotAdapter
+from spirit.telegram_bot.infrastructure.adapters.telegram import (
+    TelegramBotAdapter,
+)
 from spirit.telegram_bot.infrastructure.repositories.django import (
     DjangoBotStatusRepository,
     DjangoStrategyRepository,
 )
 from spirit.telegram_bot.models import BotStatusModel
+
 
 # Настройка логгирования
 logger = logging.getLogger(__name__)
@@ -23,7 +27,7 @@ BOT_CONTROLLER_NOT_SINGLETON_ERROR = (
 class BotController:
     """Контроллер для управления жизненным циклом бота"""
 
-    _instance: Optional["BotController"] = None
+    _instance: BotController | None = None
 
     def __init__(
         self,
@@ -44,7 +48,7 @@ class BotController:
         self.adapter: TelegramBotAdapter | None = None
 
     @classmethod
-    def get_instance(cls) -> "BotController":
+    def get_instance(cls) -> BotController:
         """
         Возвращает единственный экземпляр контроллера (паттерн Singleton)
         """

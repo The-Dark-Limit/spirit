@@ -8,37 +8,38 @@ version = "0.1.0"
 description = "Telegram Bot with Django Admin"
 requires-python = ">=3.10"
 dependencies = [
-    "Django>=4.2",
-    "aiogram>=3.4",
-    "django-redis>=5.2",
-    "mypy-extensions>=1.0",
-    "django-stubs>=4.2",
-    "django-stubs-ext>=4.2",
-    "pandas>=2.3.2",
-    "uvicorn>=0.35.0",
-    "torch>=2.8.0",
-    "transformers>=4.56.1",
-    "accelerate>=1.10.1",
-    "python-multipart>=0.0.9",  # Для работы с multipart запросами в Django
-    "types-redis>=4.7.0.20240316",  # Стайб-файлы для Redis
-    "types-requests>=2.31.0.20240116",  # Стайб-файлы для Requests
+  "Django>=4.2",
+  "aiogram>=3.4",
+  "django-redis>=5.2",
+  "mypy-extensions>=1.0",
+  "django-stubs>=4.2",
+  "django-stubs-ext>=4.2",
+  "pandas>=2.3.2",
+  "uvicorn>=0.35.0",
+  "torch>=2.8.0",
+  "transformers>=4.56.1",
+  "psycopg2-binary>=2.9.9",
+  "accelerate>=1.10.1",
+  "python-multipart>=0.0.9", # Для работы с multipart запросами в Django
+  "types-redis>=4.7.0.20240316", # Стайб-файлы для Redis
+  "types-requests>=2.31.0.20240116", # Стайб-файлы для Requests
 ]
 
 [dependency-groups]
 dev = [
-    "mypy>=1.17.1",
-    "pytest>=8.4.2",
-    "ruff>=0.12.12",
-    "pytest-django>=4.8.0",  # Для тестирования Django приложений
-    "pytest-asyncio>=0.23.5",  # Для асинхронных тестов
-    "httpx>=0.27.0",  # Для тестирования API
-    "types-channels>=4.0.0",  # Стайб-файлы для Django Channels
-    "mypy-protobuf>=3.5.0",  # Для работы с protobuf
+  "mypy>=1.17.1",
+  "pytest>=8.4.2",
+  "ruff>=0.12.12",
+  "pytest-django>=4.8.0", # Для тестирования Django приложений
+  "pytest-asyncio>=0.23.5", # Для асинхронных тестов
+  "httpx>=0.27.0", # Для тестирования API
+  "types-channels>=4.0.0", # Стайб-файлы для Django Channels
+  "mypy-protobuf>=3.5.0", # Для работы с protobuf
 ]
 
 [tool.setuptools]
 include-package-data = true
-packages = {find = {where = ["spirit"], include = ["*"]}}
+packages = { find = { where = ["spirit"], include = ["*"] } }
 
 # ======================
 # Настройки Ruff
@@ -46,61 +47,61 @@ packages = {find = {where = ["spirit"], include = ["*"]}}
 
 [tool.ruff]
 # Общие настройки
-line-length = 88
+line-length = 80
 target-version = "py310"
 src = ["spirit"]
 
 [tool.ruff.lint]
 # Выбранные правила
 select = [
-    "A",    # Builtin linting rules
-    "ANN",  # Type annotations
-    "ARG",  # Function argument rules
-    "B",    # flake8-bugbear
-    "BLE",  # PEP-8 compliant logging errors
-    "C4",   # flake8-comprehensions
-    "DTZ",  # Avoid datetime timezone unaware
-    "E",    # pycodestyle errors
-    "EM",   # flake8-errmsg
-    "ERA",  # Eradicate commented out code
-    "EXE",  # Executable permissions
-    "F",    # Pyflakes
-    "FBT",  # flake8-boolean-trap
-    "ICN",  # flake8-import-conventions
-    "ISC",  # flake8-implicit-str-concat
-    "I",    # isort
-    "N",    # pep8-naming
-    "PGH",  # pygrep-hooks
-    "PIE",  # flake8-pie
-    "PL",   # Pylint rules
-    "PT",   # flake8-pytest-style
-    "PTH",  # flake8-use-pathlib
-    "PYI",  # flake8-pyi
-    "Q",    # flake8-quotes
-    "RET",  # flake8-return
-    "RSE",  # flake8-raise
-    "RUF",  # Ruff-specific rules
-    "S",    # Bandit security linter
-    "SIM",  # flake8-simplify
-    "T20",  # flake8-print
-    "TID",  # flake8-tidy-imports
-    "UP",   # pyupgrade
-    "W",    # pycodestyle warnings
-    "YTT",  # flake8-2020
+  "A", # Builtin linting rules
+  "ANN", # Type annotations
+  "ARG", # Function argument rules
+  "B", # flake8-bugbear
+  "BLE", # PEP-8 compliant logging errors
+  "C4", # flake8-comprehensions
+  "DTZ", # Avoid datetime timezone unaware
+  "E", # pycodestyle errors
+  "EM", # flake8-errmsg
+  "ERA", # Eradicate commented out code
+  "EXE", # Executable permissions
+  "F", # Pyflakes
+  "FBT", # flake8-boolean-trap
+  "ICN", # flake8-import-conventions
+  "ISC", # flake8-implicit-str-concat
+  "I", # isort
+  "N", # pep8-naming
+  "PGH", # pygrep-hooks
+  "PIE", # flake8-pie
+  "PL", # Pylint rules
+  "PT", # flake8-pytest-style
+  "PTH", # flake8-use-pathlib
+  "PYI", # flake8-pyi
+  "Q", # flake8-quotes
+  "RET", # flake8-return
+  "RSE", # flake8-raise
+  "RUF", # Ruff-specific rules
+  "S", # Bandit security linter
+  "SIM", # flake8-simplify
+  "T20", # flake8-print
+  "TID", # flake8-tidy-imports
+  "UP", # pyupgrade
+  "W", # pycodestyle warnings
+  "YTT", # flake8-2020
 ]
 
 # Расширение правил, которые следует игнорировать
 extend-ignore = [
-    "ANN101",  # Missing type annotation for `self` in method
-    "ANN102",  # Missing type annotation for `cls` in classmethod
-    "PLR2004",  # Magic value used in comparison
-    "PLR0913",  # Too many arguments to function call
-    "PLR0912",  # Too many branches
-    "PLR0915",  # Too many statements
-    "S101",    # Use of assert detected
-    "S311",    # Standard pseudo-random generators are not suitable for cryptographic purposes
-    "UP006",   # Use type parameters (PEP 695)
-    "UP007",   # Use type parameters (PEP 695)
+  "ANN101", # Missing type annotation for `self` in method
+  "ANN102", # Missing type annotation for `cls` in classmethod
+  "PLR2004", # Magic value used in comparison
+  "PLR0913", # Too many arguments to function call
+  "PLR0912", # Too many branches
+  "PLR0915", # Too many statements
+  "S101", # Use of assert detected
+  "S311", # Standard pseudo-random generators are not suitable for cryptographic purposes
+  "UP006", # Use type parameters (PEP 695)
+  "UP007", # Use type parameters (PEP 695)
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -125,8 +126,8 @@ quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
-indent-width = 4
-quote-escape = "preserve"
+#indent-width = 4
+#quote-escape = "preserve"
 
 # Настройки импортов
 [tool.ruff.lint.isort]
@@ -139,9 +140,9 @@ force-sort-within-sections = true
 section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
 
 # Настройки типизации
-[tool.ruff.lint.mypy]
-strict = true
-warn-unreachable = true
+#[tool.ruff.lint.mypy]
+#strict = true
+#warn-unreachable = true
 
 # ======================
 # Настройки Mypy
@@ -167,15 +168,15 @@ ignore_missing_settings = true
 # Глобальные настройки mypy
 [[tool.mypy.overrides]]
 module = [
-    "django.*",
-    "aiogram.*",
-    "uvicorn.*",
-    "redis.*",
-    "pandas.*",
-    "torch.*",
-    "transformers.*",
-    "accelerate.*",
-    "channels.*"
+  "django.*",
+  "aiogram.*",
+  "uvicorn.*",
+  "redis.*",
+  "pandas.*",
+  "torch.*",
+  "transformers.*",
+  "accelerate.*",
+  "channels.*"
 ]
 ignore_missing_imports = true
 
@@ -208,15 +209,15 @@ DJANGO_SETTINGS_MODULE = "spirit.settings.django"
 python_classes = ["Test", "BaseTest", "BaseTestCase"]
 python_functions = ["test_*"]
 norecursedirs = [
-    ".git",
-    "__pycache__",
-    "venv*",
-    "env*",
-    ".venv",
-    "build",
-    "dist",
-    "*.egg-info",
-    ".mypy_cache",
-    ".ruff_cache",
-    ".pytest_cache",
+  ".git",
+  "__pycache__",
+  "venv*",
+  "env*",
+  ".venv",
+  "build",
+  "dist",
+  "*.egg-info",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".pytest_cache",
 ]

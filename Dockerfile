@@ -1,5 +1,4 @@
-# Используем официальный образ Python 3.13 как базовый
-FROM python:3.13-slim
+FROM pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime
 
 # Устанавливаем системные зависимости
 RUN apt-get update && apt-get install -y \
@@ -11,16 +10,17 @@ RUN apt-get update && apt-get install -y \
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем только pyproject.toml и requirements.txt
-COPY ./pyproject.toml ./requirements.txt ./
+# Копируем файлы зависимостей (именно в таком порядке!)
+COPY pyproject.toml ./
+COPY requirements-ml.txt ./
+COPY requirements.txt ./
 
-# Устанавливаем uv и зависимости
-RUN pip install uv && \
-    uv venv && \
-    . .venv/bin/activate && \
-    uv pip install -r requirements.txt
+# Устанавливаем ML-зависимости (они редко меняются, поэтому кэшируются)
+RUN pip install -r requirements-ml.txt
 
-# Копируем остальной код проекта
+# Устанавливаем остальные зависимости
+RUN pip install -r requirements.txt
+
 COPY . .
 
 # Экспорт переменных окружения
@@ -34,4 +34,4 @@ VOLUME ["/app/staticfiles"]
 EXPOSE 8000
 
 # Команда запуска
-CMD ["sh", "-c", ". .venv/bin/activate && python manage.py migrate && uvicorn spirit.settings.asgi:application --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "python manage.py migrate && uvicorn spirit.settings.asgi:application --host 0.0.0.0 --port 8000"]
