@@ -63,7 +63,14 @@ coverage.xml
 .ruff_cache
 
 tmp
-
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.log
+.env
+uv.lock
+*.db
 # Translations
 *.mo
 

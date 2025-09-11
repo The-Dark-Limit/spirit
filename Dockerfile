@@ -1,37 +1,16 @@
-FROM python:3.12.7-bullseye
+# Используем официальный образ Python
+FROM python:3.13-slim
 
-COPY requirements/prod.txt /app/requirements/prod.txt
-RUN --mount=type=cache,target=/var/lib/apt/lists --mount=type=cache,target=/var/cache/apt \
-    --mount=type=cache,target=/root/.cache \
-    set -ex \
-    && apt-get -qq update \
-    && buildDeps=" \
-        build-essential \
-        " \
-    && runDeps=" \
-        # utils \
-        gettext \
-        curl \
-        " \
-    && DEBIAN_FRONTEND=noninteractive apt-get \
-         install -y --no-install-recommends $buildDeps $runDeps \
-    # change timezone
-    && echo "Asia/Vladivostok" > /etc/timezone \
-    # install requirements
-    && pip install -r /app/requirements/prod.txt \
-    # cleaning
-    && if [ "${remove_build_deps}" = "true" ] ; \
-       then \
-         DEBIAN_FRONTEND=noninteractive apt-get \
-           purge -y --auto-remove $buildDeps; \
-       fi
+# Устанавливаем рабочую директорию
+WORKDIR /code
 
-COPY requirements/dev.txt /app/requirements/dev.txt
-ARG installdev=true
-RUN --mount=type=cache,target=/root/.cache \
-    if [ "${installdev}" = "true" ] ; \
-      then pip install -r /app/requirements/dev.txt ; \
-    fi
+# Копируем файлы зависимостей и устанавливаем их
+COPY uv.toml .
+RUN pip install --no-cache-dir -U uv && \
+    uv install
 
-COPY . /app
-WORKDIR /app
+# Копируем остальной код проекта
+COPY . .
+
+# Запуск приложения
+CMD ["uvicorn", "config.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
