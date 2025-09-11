@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 
 from spirit.core.domain.ports import BotStatusRepository, StrategyRepository
+from spirit.core.domain.services import MessageProcessor
 from spirit.core.domain.value_objects import BotResponse, MessageText, UserId
 from spirit.telegram_bot.infrastructure.adapters.telegram import (
     TelegramBotAdapter,

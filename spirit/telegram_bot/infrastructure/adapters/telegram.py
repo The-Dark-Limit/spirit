@@ -4,6 +4,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
 from aiogram.types import Message
 
+from spirit.core.domain.ports import BotOutputPort
 from spirit.telegram_bot.application.bot_controller import BotController
 
 
