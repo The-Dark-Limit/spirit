@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any
 
 # Константы для валидации
 TELEGRAM_MESSAGE_MAX_LENGTH = 4096
@@ -40,4 +40,4 @@ class BotResponse:
 
     text: str
     requires_echo: bool = True
-    meta: Optional[dict[str, Any]] = None
+    meta: dict[str, Any] | None = None

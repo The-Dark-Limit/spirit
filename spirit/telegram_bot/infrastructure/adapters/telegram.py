@@ -2,21 +2,16 @@ from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from spirit.core.domain.ports import BotOutputPort
-from telegram_bot.application.bot_controller import BotController
+from spirit.telegram_bot.application.bot_controller import BotController
 
 
 class TelegramBotAdapter(BotOutputPort):
-    """Адаптер для отправки сообщений через Telegram API"""
-
     def __init__(self, token: str, controller: BotController) -> None:
         self.bot = Bot(token=token)
         self.dispatcher = Dispatcher()
         self.controller = controller
 
     async def setup_handlers(self) -> None:
-        """Настраивает обработчики сообщений"""
-
         @self.dispatcher.message(Command(commands=["start"]))
         async def start_handler(message: Message) -> None:
             if not self.controller.is_running():
@@ -30,9 +25,11 @@ class TelegramBotAdapter(BotOutputPort):
             if not self.controller.is_running():
                 return
 
+            if message.from_user is None:
+                return
+
             response = self.controller.process_message(
-                user_id=message.from_user.id,
-                text=message.text or "",
+                user_id=message.from_user.id, text=message.text or ""
             )
 
             if response.requires_echo:

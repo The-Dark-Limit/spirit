@@ -1,62 +1,75 @@
-# Добавьте в начало файла
 import os
 from pathlib import Path
 
-# Основные пути
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-sys.path.append(str(BASE_DIR))  # Добавляем корень проекта в PYTHONPATH
 
-# Загрузка настроек Telegram
-try:
-    from spirit.settings.telegram import (
-        TELEGRAM_BOT_TOKEN,
-        TELEGRAM_BOT_USERNAME,
-        TELEGRAM_STRATEGY_CACHE_TIMEOUT
-    )
-except ImportError:
-    # Дефолтные значения для разработки
-    TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "YOUR_TEST_TOKEN")
-    TELEGRAM_BOT_USERNAME = os.getenv("TELEGRAM_BOT_USERNAME", "test_bot")
-    TELEGRAM_STRATEGY_CACHE_TIMEOUT = 60
+DEBUG = os.getenv("DEBUG", False)
 
-# Добавьте приложение в INSTALLED_APPS
+SECRET_KEY = os.getenv("SECRET_KEY", None)
+
 INSTALLED_APPS = [
     # Стандартные приложения Django
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # Ваши приложения
-    'spirit.core',  # Если у вас есть отдельное ядро
-    'spirit.telegram_bot',  # Наше приложение для Telegram бота
+    "spirit.core",
+    "spirit.telegram_bot",
 ]
 
-# Настройки кэширования (обязательно для стратегий)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+        },
     }
 }
 
-# Middleware для обработки асинхронных запросов
+# Middleware
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # Добавьте этот middleware для асинхронной работы
-    'django_asgi.middleware.AsyncMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# Добавьте в конец файла
-ASGI_APPLICATION = 'spirit.settings.asgi.application'
+
+ASGI_APPLICATION = "spirit.settings.asgi.application"
+
+
+ROOT_URLCONF = "spirit.settings.urls"
+
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

@@ -2,7 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from telegram_bot.models import BotStatusModel, ResponseStrategy
+from spirit.telegram_bot.models import BotStatusModel, ResponseStrategy
 
 
 @staff_member_required

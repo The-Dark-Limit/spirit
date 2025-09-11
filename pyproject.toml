@@ -6,17 +6,22 @@ build-backend = "setuptools.build_meta"
 name = "spirit"
 version = "0.1.0"
 description = "Telegram Bot with Django Admin"
-readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "Django>=4.2",
     "aiogram>=3.4",
     "django-redis>=5.2",
-    "channels>=4.1",
     "mypy-extensions>=1.0",
     "django-stubs>=4.2",
     "django-stubs-ext>=4.2",
     "pandas>=2.3.2",
+    "uvicorn>=0.35.0",
+    "torch>=2.8.0",
+    "transformers>=4.56.1",
+    "accelerate>=1.10.1",
+    "python-multipart>=0.0.9",  # Для работы с multipart запросами в Django
+    "types-redis>=4.7.0.20240316",  # Стайб-файлы для Redis
+    "types-requests>=2.31.0.20240116",  # Стайб-файлы для Requests
 ]
 
 [dependency-groups]
@@ -24,66 +29,194 @@ dev = [
     "mypy>=1.17.1",
     "pytest>=8.4.2",
     "ruff>=0.12.12",
+    "pytest-django>=4.8.0",  # Для тестирования Django приложений
+    "pytest-asyncio>=0.23.5",  # Для асинхронных тестов
+    "httpx>=0.27.0",  # Для тестирования API
+    "types-channels>=4.0.0",  # Стайб-файлы для Django Channels
+    "mypy-protobuf>=3.5.0",  # Для работы с protobuf
 ]
 
 [tool.setuptools]
 include-package-data = true
 packages = {find = {where = ["spirit"], include = ["*"]}}
 
+# ======================
+# Настройки Ruff
+# ======================
+
+[tool.ruff]
+# Общие настройки
+line-length = 88
+target-version = "py310"
+src = ["spirit"]
+
 [tool.ruff.lint]
+# Выбранные правила
 select = [
-    "A",
-    "B",
-    "C",
-    "DTZ",
-    "E",
-    "EXE",
-    "F",
-    "G",
-    "I",
-    "ICN",
-    "ISC",
-    "N",
-    "PGH",
-    "PIE",
-    "PL",
-    "PT",
-    "PYI",
-    "RUF",
-    "S",
-    "T20",
-    "TID",
-    "UP",
-    "W",
-    "YTT",
+    "A",    # Builtin linting rules
+    "ANN",  # Type annotations
+    "ARG",  # Function argument rules
+    "B",    # flake8-bugbear
+    "BLE",  # PEP-8 compliant logging errors
+    "C4",   # flake8-comprehensions
+    "DTZ",  # Avoid datetime timezone unaware
+    "E",    # pycodestyle errors
+    "EM",   # flake8-errmsg
+    "ERA",  # Eradicate commented out code
+    "EXE",  # Executable permissions
+    "F",    # Pyflakes
+    "FBT",  # flake8-boolean-trap
+    "ICN",  # flake8-import-conventions
+    "ISC",  # flake8-implicit-str-concat
+    "I",    # isort
+    "N",    # pep8-naming
+    "PGH",  # pygrep-hooks
+    "PIE",  # flake8-pie
+    "PL",   # Pylint rules
+    "PT",   # flake8-pytest-style
+    "PTH",  # flake8-use-pathlib
+    "PYI",  # flake8-pyi
+    "Q",    # flake8-quotes
+    "RET",  # flake8-return
+    "RSE",  # flake8-raise
+    "RUF",  # Ruff-specific rules
+    "S",    # Bandit security linter
+    "SIM",  # flake8-simplify
+    "T20",  # flake8-print
+    "TID",  # flake8-tidy-imports
+    "UP",   # pyupgrade
+    "W",    # pycodestyle warnings
+    "YTT",  # flake8-2020
 ]
+
+# Расширение правил, которые следует игнорировать
 extend-ignore = [
-    "PLR",  # Too many rule violations for refactoring
+    "ANN101",  # Missing type annotation for `self` in method
+    "ANN102",  # Missing type annotation for `cls` in classmethod
+    "PLR2004",  # Magic value used in comparison
+    "PLR0913",  # Too many arguments to function call
+    "PLR0912",  # Too many branches
+    "PLR0915",  # Too many statements
+    "S101",    # Use of assert detected
+    "S311",    # Standard pseudo-random generators are not suitable for cryptographic purposes
+    "UP006",   # Use type parameters (PEP 695)
+    "UP007",   # Use type parameters (PEP 695)
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
-"settings/*.py" = ["S101"]
-"*/migrations/*" = ["N806", "N815"]
-"*/tests/*" = ["S101", "S106"]
-"*/test_*.py" = ["S101", "S106"]
+"__init__.py" = ["F401", "ANN001", "ANN204"]
+"settings/*.py" = ["S101", "ANN101", "ANN401", "TID251"]
+"*/migrations/*" = ["N806", "N815", "ANN101", "ANN401", "T20", "UP"]
+"*/tests/*" = ["S101", "S106", "ANN001", "ANN201", "ARG001", "PLR2004", "T20"]
+"*/test_*.py" = ["S101", "S106", "ANN001", "ANN201", "ARG001", "PLR2004", "T20"]
+"*/admin.py" = ["ANN001", "ANN201", "PLR0913", "PLR0912", "TID251"]
+"*/models.py" = ["ANN001", "ANN201", "PLR0913", "PLR0912", "TID251"]
+"*/views.py" = ["ANN001", "ANN201", "PLR0913", "PLR0912", "TID251"]
+"*/signals.py" = ["ANN001", "ANN201", "ARG001", "TID251"]
+"*/api.py" = ["ANN001", "ANN201", "PLR0913", "TID251"]
+"*/health.py" = ["ANN001", "ANN201", "TID251"]
+"*/application/*.py" = ["ANN001", "ANN201", "PLR0913", "TID251"]
+"*/domain/**/*.py" = ["TID251"]
 
+# Настройки форматирования
+[tool.ruff.format]
+# Как должен форматироваться код
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+indent-width = 4
+quote-escape = "preserve"
+
+# Настройки импортов
+[tool.ruff.lint.isort]
+known-first-party = ["spirit"]
+lines-after-imports = 2
+combine-as-imports = true
+order-by-type = true
+required-imports = ["from __future__ import annotations"]
+force-sort-within-sections = true
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+# Настройки типизации
+[tool.ruff.lint.mypy]
+strict = true
+warn-unreachable = true
+
+# ======================
+# Настройки Mypy
+# ======================
 [tool.mypy]
 python_version = "3.13"
 plugins = ["mypy_django_plugin.main"]
 mypy_path = ["spirit"]
+explicit_package_bases = true
+disallow_any_unimported = false
+show_error_codes = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unused_configs = true
+strict_equality = true
+namespace_packages = false
 
+# Настройки django-stubs
+[tool.django-stubs]
+django_settings_module = "spirit.settings.django"
+ignore_missing_settings = true
+
+# Глобальные настройки mypy
 [[tool.mypy.overrides]]
 module = [
     "django.*",
     "aiogram.*",
-    "channels.*",
-    "asgiref.*",
+    "uvicorn.*",
+    "redis.*",
+    "pandas.*",
+    "torch.*",
+    "transformers.*",
+    "accelerate.*",
+    "channels.*"
 ]
 ignore_missing_imports = true
 
-[tool.mypy."spirit.*"]
+[[tool.mypy.overrides]]
+module = ["spirit.*"]
 follow_imports = "silent"
+strict_equality = true
 
-[tool.mypy."*.migrations.*"]
+[[tool.mypy.overrides]]
+module = ["*.migrations.*"]
 ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = ["*.tests.*", "tests.*"]
+ignore_errors = true
+
+# Исправление ошибки с дублированием модулей
+[[tool.mypy.overrides]]
+module = ["core.*"]
+ignore_errors = true
+
+# ======================
+# Настройки pytest
+# ======================
+[tool.pytest.ini_options]
+addopts = "-ra -q --tb=short"
+testpaths = ["spirit"]
+python_files = ["test_*.py", "*_test.py"]
+DJANGO_SETTINGS_MODULE = "spirit.settings.django"
+python_classes = ["Test", "BaseTest", "BaseTestCase"]
+python_functions = ["test_*"]
+norecursedirs = [
+    ".git",
+    "__pycache__",
+    "venv*",
+    "env*",
+    ".venv",
+    "build",
+    "dist",
+    "*.egg-info",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".pytest_cache",
+]

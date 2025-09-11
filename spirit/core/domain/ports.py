@@ -1,28 +1,31 @@
 from abc import ABC, abstractmethod
 
-from core.domain.strategies.base import ProcessingStrategy
-from core.domain.value_objects import BotResponse
+from spirit.core.domain.strategies.base import ProcessingStrategy
 
 
 class StrategyRepository(ABC):
-    """Порт для доступа к стратегиям обработки сообщений"""
+    """Интерфейс для репозитория стратегий обработки сообщений"""
 
     @abstractmethod
-    def get_active_strategies(self) -> list[ProcessingStrategy]:
-        """Возвращает список активных стратегий обработки"""
+    async def get_active_strategies(self) -> list[ProcessingStrategy]:
+        """Получает все активные стратегии обработки сообщений"""
 
 
 class BotStatusRepository(ABC):
-    """Порт для доступа к состоянию бота"""
+    """Интерфейс для репозитория статуса бота"""
 
     @abstractmethod
     def get_status(self) -> bool:
-        """Возвращает текущий статус бота (запущен/остановлен)"""
+        """Получает текущий статус бота (запущен/остановлен)"""
 
 
 class BotOutputPort(ABC):
-    """Порт для отправки ответов через Telegram"""
+    """Интерфейс для адаптера вывода бота"""
 
     @abstractmethod
-    async def send_response(self, chat_id: int, response: BotResponse) -> None:
-        """Асинхронная отправка ответа пользователю"""
+    def start(self) -> None:
+        """Запускает бота"""
+
+    @abstractmethod
+    def stop(self) -> None:
+        """Останавливает бота"""

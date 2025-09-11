@@ -1,5 +1,5 @@
-from core.domain.strategies.base import ProcessingStrategy
-from core.domain.value_objects import BotResponse, MessageText, UserId
+from spirit.core.domain.strategies.base import ProcessingStrategy
+from spirit.core.domain.value_objects import BotResponse, MessageText, UserId
 
 
 class KeywordStrategy(ProcessingStrategy):

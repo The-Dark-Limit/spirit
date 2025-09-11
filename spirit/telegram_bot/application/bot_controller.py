@@ -1,26 +1,34 @@
+import logging
 from typing import Optional
 
-from core.domain.services import MessageProcessor
-from core.domain.value_objects import BotResponse, MessageText, UserId
 from spirit.core.domain.ports import BotStatusRepository, StrategyRepository
-from telegram_bot.exceptions import ProcessMessageError
-from telegram_bot.infrastructure.adapters.telegram import TelegramBotAdapter
-from telegram_bot.infrastructure.repositories.django import (
+from spirit.core.domain.value_objects import BotResponse, MessageText, UserId
+from spirit.telegram_bot.infrastructure.adapters.telegram import TelegramBotAdapter
+from spirit.telegram_bot.infrastructure.repositories.django import (
     DjangoBotStatusRepository,
     DjangoStrategyRepository,
 )
-from telegram_bot.models import BotStatusModel
+from spirit.telegram_bot.models import BotStatusModel
+
+# Настройка логгирования
+logger = logging.getLogger(__name__)
+
+# Константы для ошибок
+BOT_CONTROLLER_NOT_SINGLETON_ERROR = (
+    "BotController is a singleton. Use BotController.get_instance() "
+    "to get the instance."
+)
 
 
 class BotController:
-    """Controller for managing bot lifecycle"""
+    """Контроллер для управления жизненным циклом бота"""
 
     _instance: Optional["BotController"] = None
 
     def __init__(
         self,
-        strategy_repo: Optional[StrategyRepository] = None,
-        status_repo: Optional[BotStatusRepository] = None,
+        strategy_repo: StrategyRepository | None = None,
+        status_repo: BotStatusRepository | None = None
     ) -> None:
         """
         Инициализация контроллера.
@@ -33,73 +41,71 @@ class BotController:
         self.status_repo = status_repo or DjangoBotStatusRepository()
         self.message_processor = MessageProcessor(self.strategy_repo)
         self._is_running = False
-        self.adapter: Optional[TelegramBotAdapter] = None
+        self.adapter: TelegramBotAdapter | None = None
 
     @classmethod
     def get_instance(cls) -> "BotController":
         """
-        Возвращает единственный экземпляр контроллера (Singleton pattern)
-        Эта реализация безопасна для использования в многопоточной среде
+        Возвращает единственный экземпляр контроллера (паттерн Singleton)
         """
         if cls._instance is None:
-            # Создаем экземпляр только один раз
             cls._instance = cls()
         return cls._instance
 
     def is_running(self) -> bool:
-        """Checks if the bot is running"""
+        """Проверяет, запущен ли бот"""
         return self._is_running and self.status_repo.get_status()
 
     def process_message(
         self,
         user_id: int,
-        text: str,
+        text: str
     ) -> BotResponse:
-        """Processes incoming message"""
+        """Обрабатывает входящее сообщение"""
         try:
             return self.message_processor.process(
                 UserId(user_id),
-                MessageText(text),
+                MessageText(text)
             )
-        except ProcessMessageError as e:
+        except ValueError as e:
+            logger.warning(f"Ошибка валидации при обработке сообщения: {e}")
             return BotResponse(
-                f"Processing error: {e!s}",
-                requires_echo=True,
+                f"Ошибка валидации: {e!s}",
+                requires_echo=True
+            )
+        except Exception as e:
+            logger.exception("Неожиданная ошибка при обработке сообщения")
+            return BotResponse(
+                f"Ошибка обработки: {e!s}",
+                requires_echo=True
             )
 
-    async def start(self, token: str) -> None:
-        """Starts the bot"""
+    def start(self, token: str) -> None:
+        """Запускает бота"""
         if self.is_running():
             return
 
-        # Update status in DB
+        # Обновляем статус в БД
         status = BotStatusModel.load()
         status.is_running = True
         status.save()
 
-        # Start the bot
+        # Запускаем бота
         self._is_running = True
         self.adapter = TelegramBotAdapter(token, self)
-        await self.adapter.start()
+        self.adapter.start()
 
-    async def stop(self) -> None:
-        """Stops the bot"""
+    def stop(self) -> None:
+        """Останавливает бота"""
         if not self.is_running():
             return
 
-        # Update status in DB
+        # Обновляем статус в БД
         status = BotStatusModel.load()
         status.is_running = False
         status.save()
 
-        # Stop the bot
+        # Останавливаем бота
         if self.adapter:
-            await self.adapter.stop()
+            self.adapter.stop()
         self._is_running = False
-
-
-# Константы для ошибок
-BOT_CONTROLLER_NOT_SINGLETON_ERROR = (
-    "BotController is a singleton. "
-    "Use BotController.get_instance() to get the instance."
-)
